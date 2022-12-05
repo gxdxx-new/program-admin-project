@@ -1,15 +1,8 @@
 package com.gxdxx.programadmin.entity;
 
-import com.sun.istack.NotNull;
 import lombok.*;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -24,9 +17,8 @@ import java.util.Set;
         @Index(columnList = "createdBy"),
         @Index(columnList = "createdAt")
 })
-@EntityListeners(AuditingEntityListener.class)
 @Entity
-public class Post {
+public class Post extends Auditing {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,19 +39,6 @@ public class Post {
     @OrderBy("id")
     @OneToMany(mappedBy = "post")
     private final Set<Comment> comments = new LinkedHashSet<>();
-
-    @CreatedBy
-    @Column(nullable = false, length = 30)
-    private String createdBy;
-    @CreatedDate
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
-    @LastModifiedBy
-    @Column(nullable = false, length = 30)
-    private String modifiedBy;
-    @LastModifiedDate
-    @Column(nullable = false)
-    private LocalDateTime modifiedAt;
 
     private Post(String title, String content, String hashtag) {
         this.title = title;
