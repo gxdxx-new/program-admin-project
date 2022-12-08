@@ -1,6 +1,9 @@
 # yml file
 application.yml
 
+# Querydsl
+/src/main/generated
+
 # Created by https://www.toptal.com/developers/gitignore/api/java,windows,macos,intellij+all,visualstudiocode,gradle
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,windows,macos,intellij+all,visualstudiocode,gradle
 
