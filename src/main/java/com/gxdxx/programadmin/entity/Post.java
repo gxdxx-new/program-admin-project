@@ -7,11 +7,10 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-@ToString
 @Getter
+@ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "post",
-        indexes = {
+@Table(indexes = {
         @Index(columnList = "title"),
         @Index(columnList = "hashtag"),
         @Index(columnList = "createdBy"),
@@ -25,6 +24,10 @@ public class Post extends Auditing {
     private Long id;
 
     @Setter
+    @ManyToOne(optional = false)
+    private Member member;
+
+    @Setter
     @Column(nullable = false, length = 50)
     private String title;
 
@@ -36,18 +39,19 @@ public class Post extends Auditing {
     private String hashtag;
 
     @ToString.Exclude
-    @OrderBy("id")
+    @OrderBy("createdAt DESC")
     @OneToMany(mappedBy = "post")
     private final Set<Comment> comments = new LinkedHashSet<>();
 
-    private Post(String title, String content, String hashtag) {
+    private Post(Member member, String title, String content, String hashtag) {
+        this.member = member;
         this.title = title;
         this.content = content;
         this.hashtag = hashtag;
     }
 
-    public static Post of(String title, String content, String hashtag) {
-        return new Post(title, content, hashtag);
+    public static Post of(Member member, String title, String content, String hashtag) {
+        return new Post(member, title, content, hashtag);
     }
 
     @Override
