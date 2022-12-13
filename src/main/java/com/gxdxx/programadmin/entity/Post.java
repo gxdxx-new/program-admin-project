@@ -10,8 +10,7 @@ import java.util.Set;
 @Getter
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "post",
-        indexes = {
+@Table(indexes = {
         @Index(columnList = "title"),
         @Index(columnList = "hashtag"),
         @Index(columnList = "createdBy"),

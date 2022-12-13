@@ -8,13 +8,12 @@ import java.util.Objects;
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "member",
-        indexes = {
-                @Index(columnList = "memberId"),
-                @Index(columnList = "email"),
-                @Index(columnList = "createdBy"),
-                @Index(columnList = "createdAt")
-        })
+@Table(indexes = {
+        @Index(columnList = "memberId"),
+        @Index(columnList = "email"),
+        @Index(columnList = "createdBy"),
+        @Index(columnList = "createdAt")
+})
 @Entity
 public class Member extends Auditing {
 

@@ -8,8 +8,7 @@ import java.util.Objects;
 @Getter
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "comment",
-        indexes = {
+@Table(indexes = {
         @Index(columnList = "createdBy"),
         @Index(columnList = "createdAt")
 })
