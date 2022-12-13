@@ -5,8 +5,8 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.Objects;
 
-@ToString
 @Getter
+@ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "comment",
         indexes = {
@@ -22,19 +22,24 @@ public class Comment extends Auditing {
 
     @Setter
     @ManyToOne(optional = false)
+    private Member member;
+
+    @Setter
+    @ManyToOne(optional = false)
     private Post post;
 
     @Setter
     @Column(nullable = false, length = 1000)
     private String content;
 
-    private Comment(Post post, String content) {
+    private Comment(Member member, Post post, String content) {
+        this.member = member;
         this.post = post;
         this.content = content;
     }
 
-    public static Comment of(Post post, String content) {
-        return new Comment(post, content);
+    public static Comment of(Member member, Post post, String content) {
+        return new Comment(member, post, content);
     }
 
     @Override
