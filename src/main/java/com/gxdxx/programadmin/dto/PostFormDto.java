@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @NoArgsConstructor
 @Getter
@@ -15,11 +16,11 @@ public class PostFormDto {
 
     private Long id;
 
-    @Max(50)
+    @Size(max = 50)
     @NotNull(message = "글제목은 필수 입력 값입니다.")
     private String title;
 
-    @Max(500)
+    @Size(max = 500)
     @NotNull(message = "글내용은 필수 입력 값입니다.")
     private String content;
 
