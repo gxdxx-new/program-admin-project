@@ -9,8 +9,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.validation.Valid;
+import java.security.Principal;
 
 @RequiredArgsConstructor
 @RequestMapping("/posts")
@@ -23,6 +28,17 @@ public class PostController {
     public String postForm(Model model) {
         model.addAttribute("postFormDto", new PostFormDto());
         return "posts/form";
+    }
+
+    @PostMapping("/new")
+    public String postNew(@Valid PostFormDto postFormDto, BindingResult bindingResult, Principal principal, Model model) {
+
+        if (bindingResult.hasErrors()) {
+            return "posts/form";
+        }
+        postService.savePost(principal.getName(), postFormDto);
+
+        return "redirect:/posts";
     }
 
     @GetMapping

@@ -2,8 +2,10 @@ package com.gxdxx.programadmin.service;
 
 import com.gxdxx.programadmin.dto.PostFormDto;
 import com.gxdxx.programadmin.dto.PostListDto;
+import com.gxdxx.programadmin.entity.Member;
 import com.gxdxx.programadmin.entity.Post;
 import com.gxdxx.programadmin.entity.SearchType;
+import com.gxdxx.programadmin.repository.MemberRepository;
 import com.gxdxx.programadmin.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,7 @@ import java.util.Optional;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final MemberRepository memberRepository;
 
     public Page<PostListDto> searchPosts(SearchType searchType, String searchValue, Pageable pageable) {
 
@@ -47,6 +50,16 @@ public class PostService {
                 .build();
 
         return postFormDto;
+    }
+
+    public Long savePost(String memberId, PostFormDto postFormDto) {
+
+        Member member = memberRepository.findByMemberId(memberId);
+
+        Post post = Post.of(member, postFormDto.getTitle(), postFormDto.getContent(), postFormDto.getHashtag());
+        postRepository.save(post);
+
+        return post.getId();
     }
 
 }
