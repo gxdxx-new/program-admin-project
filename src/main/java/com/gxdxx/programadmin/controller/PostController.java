@@ -55,6 +55,18 @@ public class PostController {
         return "posts/form";
     }
 
+    @PostMapping("/{postId}")
+    public String postUpdate(@Valid PostFormDto postFormDto, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return "posts/form";
+        }
+
+        postService.updatePost(postFormDto);
+
+        return "redirect:/posts/{postId}";
+    }
+
     @GetMapping
     public String posts(
             PostSearchDto postSearchDto,

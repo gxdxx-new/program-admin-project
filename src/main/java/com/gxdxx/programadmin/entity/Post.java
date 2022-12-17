@@ -54,6 +54,12 @@ public class Post extends Auditing {
         return new Post(member, title, content, hashtag);
     }
 
+    public void updatePost(String title, String content, String hashtag) {
+        this.title = title;
+        this.content = content;
+        this.hashtag = hashtag;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -65,4 +71,5 @@ public class Post extends Auditing {
     public int hashCode() {
         return Objects.hash(id);
     }
+
 }

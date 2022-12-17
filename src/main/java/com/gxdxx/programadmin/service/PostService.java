@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
@@ -60,6 +61,26 @@ public class PostService {
         postRepository.save(post);
 
         return post.getId();
+    }
+
+    public Long updatePost(PostFormDto postFormDto) {
+
+        Post post = postRepository.findById(postFormDto.getId()).orElseThrow();
+        post.updatePost(postFormDto.getTitle(), post.getTitle(), post.getHashtag());
+
+        return post.getId();
+    }
+
+    public boolean validatePost(Long postId, String memberId) {
+        Member currentMember = memberRepository.findByMemberId(memberId);
+        Post post = postRepository.findById(postId).orElseThrow();
+        Member savedMember = post.getMember();
+
+        if (!StringUtils.equals(currentMember.getMemberId(), savedMember.getMemberId())) {
+            return false;
+        }
+
+        return true;
     }
 
 }
