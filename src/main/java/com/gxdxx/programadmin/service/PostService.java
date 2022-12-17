@@ -1,6 +1,8 @@
 package com.gxdxx.programadmin.service;
 
+import com.gxdxx.programadmin.dto.PostFormDto;
 import com.gxdxx.programadmin.dto.PostListDto;
+import com.gxdxx.programadmin.entity.Post;
 import com.gxdxx.programadmin.entity.SearchType;
 import com.gxdxx.programadmin.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -31,6 +34,19 @@ public class PostService {
             case HASHTAG -> postRepository.findByHashtag("#" + searchValue, pageable).map(PostListDto::from);
         };
 
+    }
+
+    public PostFormDto getPostForm(Long postId) {
+
+        Post post = postRepository.findById(postId).orElseThrow();
+        PostFormDto postFormDto = PostFormDto.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .hashtag(post.getHashtag())
+                .build();
+
+        return postFormDto;
     }
 
 }

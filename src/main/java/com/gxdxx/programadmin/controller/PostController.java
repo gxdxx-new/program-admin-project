@@ -1,5 +1,6 @@
 package com.gxdxx.programadmin.controller;
 
+import com.gxdxx.programadmin.dto.PostFormDto;
 import com.gxdxx.programadmin.dto.PostSearchDto;
 import com.gxdxx.programadmin.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class PostController {
 
     private final PostService postService;
+
+    @GetMapping("/new")
+    public String postForm(Model model) {
+        model.addAttribute("postFormDto", new PostFormDto());
+        return "posts/form";
+    }
 
     @GetMapping
     public String posts(
