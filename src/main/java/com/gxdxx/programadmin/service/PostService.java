@@ -71,6 +71,11 @@ public class PostService {
         return post.getId();
     }
 
+    public void deletePost(Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow();
+        postRepository.delete(post);
+    }
+
     public boolean validatePost(Long postId, String memberId) {
         Member currentMember = memberRepository.findByMemberId(memberId);
         Post post = postRepository.findById(postId).orElseThrow();

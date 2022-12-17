@@ -10,6 +10,46 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 </head>
 
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+
+        function deletePost(obj){
+            var postId = obj.dataset.id;
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            var url = "/post/" + postId;
+
+            $.ajax({
+                url      : url,
+                type     : "DELETE",
+                beforeSend : function(xhr){
+                    /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType : "json",
+                cache   : false,
+                success  : function(result, status){
+                    alert('삭제되었습니다.');
+                    location.href='/posts';
+                },
+                error : function(jqXHR, status, error){
+
+                    if(jqXHR.status == '401'){
+                        alert('로그인 후 이용해주세요');
+                        location.href='/members/login';
+                    } else {
+                        alert(jqXHR.responseText);
+                        location.href='/posts';
+                    }
+
+                }
+            });
+        }
+
+    </script>
+</th:block>
+
 <body>
 
 <header th:replace="header :: header"></header>
@@ -44,6 +84,8 @@
         </div>
 
         </br>
+
+
 
     </div>
 </main>
