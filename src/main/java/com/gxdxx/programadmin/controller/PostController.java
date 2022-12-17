@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -39,6 +40,19 @@ public class PostController {
         postService.savePost(principal.getName(), postFormDto);
 
         return "redirect:/posts";
+    }
+
+    @GetMapping("/{postId}/edit")
+    public String postEditForm(@PathVariable("postId") Long postId, Principal principal, Model model) {
+
+        if(!postService.validatePost(postId, principal.getName())) {
+            return "redirect:/posts";
+        }
+
+        PostFormDto postFormDto = postService.getPostForm(postId);
+        model.addAttribute("postFormDto", postFormDto);
+
+        return "posts/form";
     }
 
     @GetMapping
