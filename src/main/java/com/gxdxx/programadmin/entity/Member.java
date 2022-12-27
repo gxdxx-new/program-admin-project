@@ -9,7 +9,7 @@ import java.util.Objects;
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(indexes = {
-        @Index(columnList = "memberId"),
+        @Index(columnList = "memberName"),
         @Index(columnList = "email"),
         @Index(columnList = "createdBy"),
         @Index(columnList = "createdAt")
@@ -23,7 +23,7 @@ public class Member extends Auditing {
 
     @Setter
     @Column(nullable = false, length = 20)
-    private String memberId;
+    private String memberName;
 
     @Setter
     @Column(nullable = false)
@@ -37,15 +37,15 @@ public class Member extends Auditing {
     @Column(length = 100)
     private String nickname;
 
-    private Member(String memberId, String password, String email, String nickname) {
-        this.memberId = memberId;
+    private Member(String memberName, String password, String email, String nickname) {
+        this.memberName = memberName;
         this.password = password;
         this.email = email;
         this.nickname = nickname;
     }
 
-    public static Member of(String memberId, String password, String email, String nickname) {
-        return new Member(memberId, password, email, nickname);
+    public static Member of(String memberName, String password, String email, String nickname) {
+        return new Member(memberName, password, email, nickname);
     }
 
     @Override

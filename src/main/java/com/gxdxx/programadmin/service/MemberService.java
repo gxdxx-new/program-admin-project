@@ -23,7 +23,7 @@ public class MemberService {
     }
 
     private void validateDuplicateMember(Member member) {
-        Member findMember = memberRepository.findByMemberId(member.getMemberId());
+        Member findMember = memberRepository.findByMemberName(member.getMemberName());
     }
 
 }

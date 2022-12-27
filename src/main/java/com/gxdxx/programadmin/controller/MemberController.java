@@ -33,7 +33,7 @@ public class MemberController {
             return "members/form";
         }
 
-        Member member = Member.of(memberFormDto.getMemberId(), memberFormDto.getPassword(), memberFormDto.getEmail(), memberFormDto.getNickname());
+        Member member = Member.of(memberFormDto.getMemberName(), memberFormDto.getPassword(), memberFormDto.getEmail(), memberFormDto.getNickname());
         try {
             memberService.saveMember(member);
         } catch (Exception e) {
