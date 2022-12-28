@@ -37,11 +37,15 @@ public class Member extends Auditing {
     @Column(length = 100)
     private String nickname;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     private Member(String memberName, String password, String email, String nickname) {
         this.memberName = memberName;
         this.password = password;
         this.email = email;
         this.nickname = nickname;
+        this.role = Role.USER;
     }
 
     public static Member of(String memberName, String password, String email, String nickname) {
