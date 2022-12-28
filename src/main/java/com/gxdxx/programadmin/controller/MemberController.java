@@ -33,9 +33,8 @@ public class MemberController {
             return "members/form";
         }
 
-        Member member = Member.of(memberFormDto.getMemberName(), memberFormDto.getPassword(), memberFormDto.getEmail(), memberFormDto.getNickname());
         try {
-            memberService.saveMember(member);
+            memberService.saveMember(memberFormDto);
         } catch (Exception e) {
             model.addAttribute("errorMessage", "회원가입 중 에러가 발생했습니다.");
             return "members/form";

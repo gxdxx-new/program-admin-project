@@ -53,9 +53,9 @@ public class PostService {
         return postFormDto;
     }
 
-    public Long savePost(String memberId, PostFormDto postFormDto) {
+    public Long savePost(String memberName, PostFormDto postFormDto) {
 
-        Member member = memberRepository.findByMemberId(memberId);
+        Member member = memberRepository.findByMemberName(memberName);
 
         Post post = Post.of(member, postFormDto.getTitle(), postFormDto.getContent(), postFormDto.getHashtag());
         postRepository.save(post);
@@ -76,12 +76,12 @@ public class PostService {
         postRepository.delete(post);
     }
 
-    public boolean validatePost(Long postId, String memberId) {
-        Member currentMember = memberRepository.findByMemberId(memberId);
+    public boolean validatePost(Long postId, String memberName) {
+        Member currentMember = memberRepository.findByMemberName(memberName);
         Post post = postRepository.findById(postId).orElseThrow();
         Member savedMember = post.getMember();
 
-        if (!StringUtils.equals(currentMember.getMemberId(), savedMember.getMemberId())) {
+        if (!StringUtils.equals(currentMember.getMemberName(), savedMember.getMemberName())) {
             return false;
         }
 
