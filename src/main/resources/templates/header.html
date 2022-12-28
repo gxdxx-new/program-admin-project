@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -13,8 +13,8 @@
             </ul>
 
             <div class="text-end">
-                <button type="button" class="btn btn-outline-light me-2">Login</button>
-                <button type="button" class="btn btn-warning">Sign-up</button>
+                <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/members/login}">로그인</a>
+                <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/members/logout}">로그아웃</a>
             </div>
         </div>
     </div>

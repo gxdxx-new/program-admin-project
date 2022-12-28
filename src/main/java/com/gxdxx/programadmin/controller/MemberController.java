@@ -32,7 +32,7 @@ public class MemberController {
         if (bindingResult.hasErrors()) {
             return "members/form";
         }
-
+        
         try {
             memberService.saveMember(memberFormDto);
         } catch (Exception e) {
@@ -41,6 +41,17 @@ public class MemberController {
         }
 
         return "redirect:/";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "members/login";
+    }
+
+    @GetMapping(value = "/login/error")
+    public String loginError(Model model) {
+        model.addAttribute("loginErrorMessage", "아이디 또는 비밀번호를 확인해주세요.");
+        return "members/login";
     }
 
 }
