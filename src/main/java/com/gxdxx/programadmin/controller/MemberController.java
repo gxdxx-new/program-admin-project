@@ -23,7 +23,7 @@ public class MemberController {
     @GetMapping(value = "/new")
     public String memberForm(Model model) {
         model.addAttribute("memberFormDto", new MemberFormDto());
-        return "member/memberForm";
+        return "members/form";
     }
 
     @PostMapping(value = "/new")
@@ -32,16 +32,26 @@ public class MemberController {
         if (bindingResult.hasErrors()) {
             return "members/form";
         }
-
-        Member member = Member.of(memberFormDto.getMemberId(), memberFormDto.getPassword(), memberFormDto.getEmail(), memberFormDto.getNickname());
+        
         try {
-            memberService.saveMember(member);
+            memberService.saveMember(memberFormDto);
         } catch (Exception e) {
             model.addAttribute("errorMessage", "회원가입 중 에러가 발생했습니다.");
             return "members/form";
         }
 
         return "redirect:/";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "members/login";
+    }
+
+    @GetMapping(value = "/login/error")
+    public String loginError(Model model) {
+        model.addAttribute("loginErrorMessage", "아이디 또는 비밀번호를 확인해주세요.");
+        return "members/login";
     }
 
 }
