@@ -5,6 +5,8 @@ import com.gxdxx.programadmin.dto.PostListDto;
 import com.gxdxx.programadmin.entity.Member;
 import com.gxdxx.programadmin.entity.Post;
 import com.gxdxx.programadmin.entity.SearchType;
+import com.gxdxx.programadmin.exception.PostAjaxNotFoundException;
+import com.gxdxx.programadmin.exception.PostNotFoundException;
 import com.gxdxx.programadmin.repository.MemberRepository;
 import com.gxdxx.programadmin.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -42,7 +43,7 @@ public class PostService {
 
     public PostFormDto getPostForm(Long postId) {
 
-        Post post = postRepository.findById(postId).orElseThrow();
+        Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
         PostFormDto postFormDto = PostFormDto.builder()
                 .id(post.getId())
                 .title(post.getTitle())
@@ -65,20 +66,20 @@ public class PostService {
 
     public Long updatePost(PostFormDto postFormDto) {
 
-        Post post = postRepository.findById(postFormDto.getId()).orElseThrow();
+        Post post = postRepository.findById(postFormDto.getId()).orElseThrow(PostNotFoundException::new);
         post.updatePost(postFormDto.getTitle(), post.getTitle(), post.getHashtag());
 
         return post.getId();
     }
 
     public void deletePost(Long postId) {
-        Post post = postRepository.findById(postId).orElseThrow();
+        Post post = postRepository.findById(postId).orElseThrow(PostAjaxNotFoundException::new);
         postRepository.delete(post);
     }
 
     public boolean validatePost(Long postId, String memberName) {
         Member currentMember = memberRepository.findByMemberName(memberName);
-        Post post = postRepository.findById(postId).orElseThrow();
+        Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
         Member savedMember = post.getMember();
 
         if (!StringUtils.equals(currentMember.getMemberName(), savedMember.getMemberName())) {
