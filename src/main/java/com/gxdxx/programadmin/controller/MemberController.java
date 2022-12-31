@@ -32,14 +32,8 @@ public class MemberController {
         if (bindingResult.hasErrors()) {
             return "members/form";
         }
-        
-        try {
-            memberService.saveMember(memberFormDto);
-        } catch (Exception e) {
-            model.addAttribute("errorMessage", "회원가입 중 에러가 발생했습니다.");
-            return "members/form";
-        }
 
+        memberService.saveMember(memberFormDto);
         return "redirect:/";
     }
 

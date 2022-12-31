@@ -3,6 +3,7 @@ package com.gxdxx.programadmin.service;
 import com.gxdxx.programadmin.dto.MemberFormDto;
 import com.gxdxx.programadmin.entity.Member;
 import com.gxdxx.programadmin.entity.Role;
+import com.gxdxx.programadmin.exception.MemberNameAlreadyExistsException;
 import com.gxdxx.programadmin.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,8 +36,8 @@ public class MemberService implements UserDetailsService {
 
     private void validateDuplicateMember(Member member) {
         Member findMember = memberRepository.findByMemberName(member.getMemberName());
-        if (findMember == null) {
-            //예외처리 해야함
+        if (findMember != null) {
+            throw new MemberNameAlreadyExistsException(findMember.getMemberName());
         }
     }
 
