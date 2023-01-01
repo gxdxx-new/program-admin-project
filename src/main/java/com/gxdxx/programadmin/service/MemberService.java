@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -26,9 +27,10 @@ import java.util.List;
 public class MemberService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public Long saveMember(MemberFormDto memberFormDto) {
-        Member member = Member.of(memberFormDto.getMemberName(), memberFormDto.getPassword(), memberFormDto.getEmail(), memberFormDto.getNickname());
+        Member member = Member.of(memberFormDto.getMemberName(), passwordEncoder.encode(memberFormDto.getPassword()), memberFormDto.getEmail(), memberFormDto.getNickname());
         validateDuplicateMember(member);
         memberRepository.save(member);
         return member.getId();
