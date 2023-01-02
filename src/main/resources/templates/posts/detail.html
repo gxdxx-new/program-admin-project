@@ -75,7 +75,7 @@
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
 
-            var url = "/post/" + postId;
+            var url = "/posts/" + postId;
 
             $.ajax({
                 url      : url,
@@ -132,7 +132,7 @@
                 <div class="jumbotron mgt-30">
                     <p class="lead" th:text="${post.content}"></p>
                 </div>
-                <a th:href="'/post/'+${post.id}+'/edit'" class="btn btn-primary">수정</a>
+                <a th:href="'/posts/'+${post.id}+'/edit'" class="btn btn-primary">수정</a>
                 <button type="button" class="btn btn-primary" aria-label="Close">
                     <span aria-hidden="true" th:data-id="${post.id}" onclick="deletePost(this)">삭제</span>
                 </button>
