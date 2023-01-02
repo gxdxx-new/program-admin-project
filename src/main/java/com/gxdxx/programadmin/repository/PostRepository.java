@@ -17,7 +17,7 @@ public interface PostRepository extends
         QuerydslBinderCustomizer<QPost> {
 
     Page<Post> findByTitleContains(String title, Pageable pageable);
-    Page<Post> findByMember_NicknameContains(String nickname, Pageable pageable);
+    Page<Post> findByMember_MemberNameContains(String nickname, Pageable pageable);
     Page<Post> findByHashtag(String hashtag, Pageable pageable);
 
     @Override
