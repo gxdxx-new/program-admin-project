@@ -44,4 +44,13 @@ public class CommentService {
         return commentListDtos;
     }
 
+    public void saveComment(String userName, Long postId, CommentFormDto commentFormDto) {
+        Member member = memberRepository.findByMemberName(userName);
+        Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+
+        Comment comment = Comment.of(member, post, commentFormDto.getContent());
+        post.getComments().add(comment);
+        commentRepository.save(comment);
+    }
+
 }

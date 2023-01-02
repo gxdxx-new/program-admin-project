@@ -1,9 +1,38 @@
 package com.gxdxx.programadmin.controller;
 
+import com.gxdxx.programadmin.dto.CommentFormDto;
+import com.gxdxx.programadmin.service.CommentService;
+import com.gxdxx.programadmin.service.PostService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.security.Principal;
+
+@RequiredArgsConstructor
 @RequestMapping("/comments")
 @Controller
 public class CommentController {
+
+    private final PostService postService;
+    private final CommentService commentService;
+
+    @PostMapping(value = "/{postId}")
+    public @ResponseBody
+    ResponseEntity commentNew(@Valid @RequestBody CommentFormDto commentFormDto, BindingResult bindingResult,
+                              @PathVariable("postId") Long postId, Principal principal) {
+
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<String>("댓글을 1000자 이내로 입력해주세요.", HttpStatus.FORBIDDEN);
+        }
+
+        commentService.saveComment(principal.getName(), postId, commentFormDto);
+
+        return new ResponseEntity<Long>(postId, HttpStatus.OK);
+    }
+
 }
