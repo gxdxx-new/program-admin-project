@@ -4,8 +4,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Max;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -16,12 +18,12 @@ public class PostFormDto {
 
     private Long id;
 
-    @Size(max = 50)
-    @NotNull(message = "글제목은 필수 입력 값입니다.")
+    @NotEmpty(message = "글제목은 필수 입력 값입니다.")
+    @Length(min = 2, max = 50, message = "글제목은 2자 이상, 50자 이하로 입력해주세요.")
     private String title;
 
-    @Size(max = 500)
-    @NotNull(message = "글내용은 필수 입력 값입니다.")
+    @NotEmpty(message = "글내용은 필수 입력 값입니다.")
+    @Length(min = 2, max = 500, message = "글내용은 2자 이상, 500자 이하로 입력해주세요.")
     private String content;
 
     private String hashtag;
