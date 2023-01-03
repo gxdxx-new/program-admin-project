@@ -1,6 +1,7 @@
 package com.gxdxx.programadmin.dto;
 
 import com.gxdxx.programadmin.entity.Post;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class PostListDto {
 
     private Long id;
