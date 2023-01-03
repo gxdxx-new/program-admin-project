@@ -35,4 +35,21 @@ public class CommentController {
         return new ResponseEntity<Long>(postId, HttpStatus.OK);
     }
 
+    @PatchMapping(value = "/{commentId}")
+    public @ResponseBody ResponseEntity updateComment(@Valid @RequestBody CommentFormDto commentFormDto, BindingResult bindingResult,
+                                                      @PathVariable("commentId") Long commentId, Principal principal) {
+
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<String>("댓글을 1000자 이내로 입력해주세요.", HttpStatus.FORBIDDEN);
+        }
+
+        if (!commentService.validateComment(commentId, principal.getName())) {
+            return new ResponseEntity<String>("수정 권한이 없습니다.", HttpStatus.FORBIDDEN);
+        }
+
+        commentService.updateComment(commentId, commentFormDto);
+
+        return new ResponseEntity<Long>(commentId, HttpStatus.OK);
+    }
+
 }

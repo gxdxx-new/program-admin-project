@@ -5,6 +5,7 @@ import com.gxdxx.programadmin.dto.CommentListDto;
 import com.gxdxx.programadmin.entity.Comment;
 import com.gxdxx.programadmin.entity.Member;
 import com.gxdxx.programadmin.entity.Post;
+import com.gxdxx.programadmin.exception.CommentAjaxNotFoundException;
 import com.gxdxx.programadmin.exception.PostNotFoundException;
 import com.gxdxx.programadmin.repository.CommentRepository;
 import com.gxdxx.programadmin.repository.MemberRepository;
@@ -12,6 +13,7 @@ import com.gxdxx.programadmin.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -51,6 +53,25 @@ public class CommentService {
         Comment comment = Comment.of(member, post, commentFormDto.getContent());
         post.getComments().add(comment);
         commentRepository.save(comment);
+    }
+
+    public void updateComment(Long commentId, CommentFormDto commentFormDto) {
+
+        Comment comment = commentRepository.findById(commentId).orElseThrow(CommentAjaxNotFoundException::new);
+        comment.updateComment(commentFormDto.getContent());
+
+    }
+
+    public boolean validateComment(Long commentId, String memberName) {
+        Member currentMember = memberRepository.findByMemberName(memberName);
+        Comment comment = commentRepository.findById(commentId).orElseThrow(CommentAjaxNotFoundException::new);
+        Member savedMember = comment.getMember();
+
+        if (!StringUtils.equals(currentMember.getMemberName(), savedMember.getMemberName())) {
+            return false;
+        }
+
+        return true;
     }
 
 }

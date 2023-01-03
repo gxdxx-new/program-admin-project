@@ -41,6 +41,10 @@ public class Comment extends Auditing {
         return new Comment(member, post, content);
     }
 
+    public void updateComment(String commentContent) {
+        this.content = commentContent;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
