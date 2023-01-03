@@ -52,4 +52,15 @@ public class CommentController {
         return new ResponseEntity<Long>(commentId, HttpStatus.OK);
     }
 
+    @DeleteMapping(value = "/{commentId}")
+    public @ResponseBody ResponseEntity deleteComment(@PathVariable("commentId") Long commentId, Principal principal) {
+
+        if (!commentService.validateComment(commentId, principal.getName())) {
+            return new ResponseEntity<String>("삭제 권한이 없습니다.", HttpStatus.FORBIDDEN);
+        }
+
+        commentService.deleteComment(commentId);
+        return new ResponseEntity<Long>(commentId, HttpStatus.OK);
+    }
+
 }

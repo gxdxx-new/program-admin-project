@@ -6,6 +6,7 @@ import com.gxdxx.programadmin.entity.Comment;
 import com.gxdxx.programadmin.entity.Member;
 import com.gxdxx.programadmin.entity.Post;
 import com.gxdxx.programadmin.exception.CommentAjaxNotFoundException;
+import com.gxdxx.programadmin.exception.PostAjaxNotFoundException;
 import com.gxdxx.programadmin.exception.PostNotFoundException;
 import com.gxdxx.programadmin.repository.CommentRepository;
 import com.gxdxx.programadmin.repository.MemberRepository;
@@ -60,6 +61,21 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId).orElseThrow(CommentAjaxNotFoundException::new);
         comment.updateComment(commentFormDto.getContent());
 
+    }
+
+    public void deleteComment(Long commentId) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(CommentAjaxNotFoundException::new);
+        Post post = postRepository.findById(comment.getPost().getId()).orElseThrow(PostAjaxNotFoundException::new);
+
+        // 게시글에서도 삭제하고, 댓글에서도 삭제
+        for (Comment findComment : post.getComments()) {
+            if (findComment.getId() == comment.getId()) {
+                post.getComments().remove(findComment);
+                break;
+            }
+        }
+
+        commentRepository.delete(comment);
     }
 
     public boolean validateComment(Long commentId, String memberName) {
