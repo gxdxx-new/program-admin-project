@@ -1,6 +1,7 @@
 package com.gxdxx.programadmin.advice;
 
 import com.gxdxx.programadmin.dto.MemberFormDto;
+import com.gxdxx.programadmin.exception.CommentAjaxNotFoundException;
 import com.gxdxx.programadmin.exception.MemberNameAlreadyExistsException;
 import com.gxdxx.programadmin.exception.PostAjaxNotFoundException;
 import com.gxdxx.programadmin.exception.PostNotFoundException;
@@ -33,6 +34,12 @@ public class ControllerExceptionAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<String> postAjaxNotFoundException() {
         return new ResponseEntity<String>("존재하지 않는 게시글입니다.", HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(CommentAjaxNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<String> commentAjaxNotFoundException() {
+        return new ResponseEntity<String>("존재하지 않는 댓글입니다.", HttpStatus.NOT_FOUND);
     }
 
 }

@@ -1,7 +1,10 @@
 package com.gxdxx.programadmin.controller;
 
+import com.gxdxx.programadmin.dto.CommentListDto;
+import com.gxdxx.programadmin.dto.PostDetailDto;
 import com.gxdxx.programadmin.dto.PostFormDto;
 import com.gxdxx.programadmin.dto.PostSearchDto;
+import com.gxdxx.programadmin.service.CommentService;
 import com.gxdxx.programadmin.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RequestMapping("/posts")
@@ -23,6 +27,7 @@ import java.security.Principal;
 public class PostController {
 
     private final PostService postService;
+    private final CommentService commentService;
 
     @GetMapping("/new")
     public String postForm(Model model) {
@@ -64,6 +69,17 @@ public class PostController {
         postService.updatePost(postFormDto);
 
         return "redirect:/posts/{postId}";
+    }
+
+    @GetMapping(value = "/{postId}")
+    public String postDetail(Model model, @PathVariable("postId") Long postId) {
+
+        PostDetailDto postDetailDto = postService.getPostDetail(postId);
+        List<CommentListDto> commentListDtos = commentService.getComments(postId);
+
+        model.addAttribute("post", postDetailDto);
+        model.addAttribute("comments", commentListDtos);
+        return "posts/detail";
     }
 
     @DeleteMapping(value = "/posts/{postId}")  // 글 삭제

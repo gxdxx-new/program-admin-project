@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,17 +8,142 @@
     <title>게시글</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
+    <meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+    <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}" />
+</head>
 </head>
 
 <th:block layout:fragment="script">
     <script th:inline="javascript">
 
-        function deletePost(obj){
+        function saveComment(obj){
             var postId = obj.dataset.id;
+            var commentContent = $("#saveCommentContent").val();
+
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
 
-            var url = "/post/" + postId;
+            var url = "/comments/" + postId;
+
+            var paramData = {
+                content : commentContent
+            };
+
+            var commentFormDto = JSON.stringify(paramData);
+
+            $.ajax({
+                url      : url,
+                type     : "POST",
+                contentType : "application/json",
+                data     : commentFormDto,
+                beforeSend : function(xhr){
+                    /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType : "json",
+                cache   : false,
+                success  : function(result, status){
+                    location.href='/posts/' + [[${postId}]];
+                },
+                error : function(jqXHR, status, error){
+
+                    if(jqXHR.status == '401'){
+                        alert('로그인 후 이용해주세요');
+                        location.href='/members/login';
+                    } else{
+                        alert(jqXHR.responseText);
+                    }
+
+                }
+            });
+        }
+
+        function updateComment(obj){
+            var commentId = obj.dataset.id;
+            var commentContent = $("#updateCommentContent").val();
+
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            var url = "/comments/" + commentId;
+
+            var paramData = {
+                content : commentContent
+            };
+
+            var commentFormDto = JSON.stringify(paramData);
+
+            $.ajax({
+                url      : url,
+                type     : "PATCH",
+                contentType : "application/json",
+                data     : commentFormDto,
+                beforeSend : function(xhr){
+                    /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType : "json",
+                cache   : false,
+                success  : function(result, status){
+                    alert('댓글이 수정되었습니다.');
+                    location.href='/posts/' + [[${postId}]];
+                },
+                error : function(jqXHR, status, error){
+
+                    if(jqXHR.status == '401'){
+                        alert('로그인 후 이용해주세요');
+                        location.href='/members/login';
+                    } else{
+                        alert(jqXHR.responseText);
+                    }
+
+                }
+            });
+        }
+
+        function deleteComment(obj){
+            var commentId = obj.dataset.id;
+
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            var url = "/comments/" + commentId;
+
+            $.ajax({
+                url      : url,
+                type     : "DELETE",
+                beforeSend : function(xhr){
+                    /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType : "json",
+                cache   : false,
+                success  : function(result, status){
+                    alert('댓글이 삭제되었습니다.');
+                    location.href='/posts/' + [[${postId}]];
+                },
+                error : function(jqXHR, status, error){
+
+                    if(jqXHR.status == '401'){
+                        alert('로그인 후 이용해주세요');
+                        location.href='/members/login';
+                    } else{
+                        alert(jqXHR.responseText);
+                    }
+
+                }
+            });
+        }
+
+        function deletePost(obj){
+            var postId = obj.dataset.id;
+
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            var url = "/posts/" + postId;
 
             $.ajax({
                 url      : url,
@@ -75,7 +200,7 @@
                 <div class="jumbotron mgt-30">
                     <p class="lead" th:text="${post.content}"></p>
                 </div>
-                <a th:href="'/post/'+${post.id}+'/edit'" class="btn btn-primary">수정</a>
+                <a th:href="'/posts/'+${post.id}+'/edit'" class="btn btn-primary">수정</a>
                 <button type="button" class="btn btn-primary" aria-label="Close">
                     <span aria-hidden="true" th:data-id="${post.id}" onclick="deletePost(this)">삭제</span>
                 </button>
@@ -83,11 +208,43 @@
 
         </div>
 
+        <div class="text-center mt-3">
+
+            <div class="input-group">
+                <textarea class="form-control" aria-label="With textarea" th:id="saveCommentContent"></textarea>
+                <div class="input-group-prepend">
+                    <button type="button" class="btn btn-primary" th:data-id="${post.id}" onclick="saveComment(this)">댓글 작성</button>
+                </div>
+            </div>
+
+        </div>
+
         </br>
 
-
+        <div th:each="comment : ${comments}" class="mb-3">
+            <span class="h5" th:text="${comment.createdBy}"></span><br/>
+            <span th:text="${comment.createdAt}"></span>
+            <th:block th:if="${comment.createdBy} == ${#authentication.name}">
+                <button type="button" class="btn btn-primary" data-bs-toggle="collapse" th:attr="data-bs-target=|#updateComment_${comment.id}">
+                    수정
+                </button>
+                <button type="button" class="btn btn-primary" th:data-id="${comment.id}" onclick="deleteComment(this)">삭제</button>
+            </th:block>
+            <div class="collapse" th:id="'updateComment_' + ${comment.id}">
+                <div class="input-group">
+                    <textarea class="form-control" aria-label="With textarea" th:id="updateCommentContent"></textarea>
+                    <div class="input-group-prepend">
+                        <button type="button" class="btn btn-primary" th:data-id="${comment.id}" onclick="updateComment(this)">수정</button>
+                    </div>
+                </div>
+            </div>
+            <br/><br/>
+            <span th:text="${comment.content}"></span><br/><br/>
+            <hr/>
+        </div>
 
     </div>
+
 </main>
 
 <footer th:replace="footer :: footer"></footer>

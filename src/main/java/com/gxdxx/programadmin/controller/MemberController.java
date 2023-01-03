@@ -18,7 +18,7 @@ import javax.validation.Valid;
 @Controller
 public class MemberController {
 
-    private MemberService memberService;
+    private final MemberService memberService;
 
     @GetMapping(value = "/new")
     public String memberForm(Model model) {

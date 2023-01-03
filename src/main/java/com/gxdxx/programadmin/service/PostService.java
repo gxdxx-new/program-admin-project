@@ -1,5 +1,6 @@
 package com.gxdxx.programadmin.service;
 
+import com.gxdxx.programadmin.dto.PostDetailDto;
 import com.gxdxx.programadmin.dto.PostFormDto;
 import com.gxdxx.programadmin.dto.PostListDto;
 import com.gxdxx.programadmin.entity.Member;
@@ -35,7 +36,7 @@ public class PostService {
 
         return switch (searchType) {
             case TITLE -> postRepository.findByTitleContains(searchValue, pageable).map(PostListDto::from);
-            case NICKNAME -> postRepository.findByMember_NicknameContains(searchValue, pageable).map(PostListDto::from);
+            case MEMBERNAME -> postRepository.findByMember_MemberNameContains(searchValue, pageable).map(PostListDto::from);
             case HASHTAG -> postRepository.findByHashtag("#" + searchValue, pageable).map(PostListDto::from);
         };
 
@@ -52,6 +53,21 @@ public class PostService {
                 .build();
 
         return postFormDto;
+    }
+
+    public PostDetailDto getPostDetail(Long postId) {
+
+        Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+        PostDetailDto postDetailDto = PostDetailDto.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .hashtag(post.getHashtag())
+                .createdBy(post.getCreatedBy())
+                .createdAt(post.getCreatedAt())
+                .build();
+
+        return postDetailDto;
     }
 
     public Long savePost(String memberName, PostFormDto postFormDto) {

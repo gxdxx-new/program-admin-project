@@ -5,15 +5,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-import java.util.Optional;
-
 @EnableJpaAuditing
 @Configuration
-public class JpaConfig {
+public class AuditConfig {
 
     @Bean
-    public AuditorAware<String> auditorAware() {
-        return () -> Optional.of("don");    // 임시 데이터
+    public AuditorAware<String> auditorProvider() {
+        return new AuditorAwareImpl();
     }
 
 }
