@@ -201,9 +201,7 @@
                     <p class="lead" th:text="${post.content}"></p>
                 </div>
                 <a th:href="'/posts/'+${post.id}+'/edit'" class="btn btn-primary">수정</a>
-                <button type="button" class="btn btn-primary" aria-label="Close">
-                    <span aria-hidden="true" th:data-id="${post.id}" onclick="deletePost(this)">삭제</span>
-                </button>
+                <button type="button" class="btn btn-primary" th:data-id="${post.id}" onclick="deletePost(this)">삭제</button>
             </div>
 
         </div>
