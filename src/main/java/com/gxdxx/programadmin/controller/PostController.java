@@ -82,7 +82,7 @@ public class PostController {
         return "posts/detail";
     }
 
-    @DeleteMapping(value = "/posts/{postId}")  // 글 삭제
+    @DeleteMapping(value = "/{postId}")  // 글 삭제
     public @ResponseBody ResponseEntity deletePost(
             @PathVariable("postId") Long postId, Principal principal) {
 
