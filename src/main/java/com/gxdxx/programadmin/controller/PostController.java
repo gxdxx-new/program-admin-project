@@ -49,7 +49,7 @@ public class PostController {
     @GetMapping("/{postId}/edit")
     public String postEditForm(@PathVariable("postId") Long postId, Principal principal, Model model) {
 
-        if(!postService.validatePost(postId, principal.getName())) {
+        if(!postService.validatePost(postId, principal.getName(), false)) {
             return "redirect:/posts";
         }
 
@@ -86,7 +86,7 @@ public class PostController {
     public @ResponseBody ResponseEntity deletePost(
             @PathVariable("postId") Long postId, Principal principal) {
 
-        if (!postService.validatePost(postId, principal.getName())) {
+        if (!postService.validatePost(postId, principal.getName(), true)) {
             return new ResponseEntity<String>("삭제 권한이 없습니다.", HttpStatus.FORBIDDEN);
         }
 

@@ -93,9 +93,14 @@ public class PostService {
         postRepository.delete(post);
     }
 
-    public boolean validatePost(Long postId, String memberName) {
+    public boolean validatePost(Long postId, String memberName, boolean isAjax) {
         Member currentMember = memberRepository.findByMemberName(memberName);
-        Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+        Post post;
+        if (isAjax) {
+            post = postRepository.findById(postId).orElseThrow(PostAjaxNotFoundException::new);
+        } else {
+            post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+        }
         Member savedMember = post.getMember();
 
         if (!StringUtils.equals(currentMember.getMemberName(), savedMember.getMemberName())) {
