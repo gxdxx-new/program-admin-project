@@ -1,5 +1,6 @@
 package com.gxdxx.programadmin.advice;
 
+import com.gxdxx.programadmin.dto.CommentListDto;
 import com.gxdxx.programadmin.dto.MemberFormDto;
 import com.gxdxx.programadmin.exception.CommentAjaxNotFoundException;
 import com.gxdxx.programadmin.exception.MemberNameAlreadyExistsException;
@@ -27,7 +28,7 @@ public class ControllerExceptionAdvice {
     @ExceptionHandler(PostNotFoundException.class)
     public String postNotFoundException(Model model) {
         model.addAttribute("errorMessage", "존재하지 않는 게시글입니다.");
-        return "posts/index";
+        return "index";
     }
 
     @ExceptionHandler(PostAjaxNotFoundException.class)
