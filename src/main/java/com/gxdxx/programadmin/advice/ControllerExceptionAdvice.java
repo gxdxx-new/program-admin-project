@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.w3c.dom.events.EventException;
 
 @Slf4j
 @ControllerAdvice
@@ -41,6 +42,11 @@ public class ControllerExceptionAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<String> commentAjaxNotFoundException() {
         return new ResponseEntity<String>("존재하지 않는 댓글입니다.", HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({EventException.class, RuntimeException.class})
+    public String eventErrorHandler(Model model){
+        return "error";
     }
 
 }
