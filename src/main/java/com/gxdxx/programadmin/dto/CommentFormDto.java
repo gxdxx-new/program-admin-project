@@ -14,7 +14,7 @@ public class CommentFormDto {
     private Long id;
 
     @NotEmpty(message = "댓글 내용은 필수 입력 값입니다.")
-    @Length(max = 1000, message = "댓글 내용은 1000자 이하로 입력해주세요.")
+    @Length(min = 1, max = 1000, message = "댓글 내용은 1000자 이하로 입력해주세요.")
     private String content;
 
     private String createdBy;
