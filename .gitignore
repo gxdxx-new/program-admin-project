@@ -1,3 +1,6 @@
+# bootstrap
+/src/main/resources/static/bootstrap
+
 # yml file
 application.yml
 
