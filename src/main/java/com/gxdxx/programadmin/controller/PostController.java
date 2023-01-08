@@ -41,6 +41,7 @@ public class PostController {
         if (bindingResult.hasErrors()) {
             return "posts/form";
         }
+
         postService.savePost(principal.getName(), postFormDto);
 
         return "redirect:/posts";
@@ -102,6 +103,7 @@ public class PostController {
 
         model.addAttribute("posts", postService.searchPosts(postSearchDto.getSearchType(), postSearchDto.getSearchValue(), pageable));
         model.addAttribute("postSearchDto", postSearchDto);
+        model.addAttribute("maxPage", 5);
 
         return "posts/index";
 
