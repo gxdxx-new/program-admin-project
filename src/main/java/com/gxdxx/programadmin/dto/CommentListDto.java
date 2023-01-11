@@ -3,6 +3,7 @@ package com.gxdxx.programadmin.dto;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
@@ -17,7 +18,7 @@ public class CommentListDto {
 
     private String createdBy;
 
-    private LocalDateTime createdAt;
+    private String createdAt;
 
     @Builder
     public CommentListDto(Long id, Long postId, String content, String createdBy, LocalDateTime createdAt) {
@@ -25,7 +26,7 @@ public class CommentListDto {
         this.postId = postId;
         this.content = content;
         this.createdBy = createdBy;
-        this.createdAt = createdAt;
+        this.createdAt = createdAt.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm:ss"));
     }
 
 }

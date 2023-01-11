@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @ToString
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
-public class Auditing {
+public abstract class Auditing {
 
     @CreatedBy
     @Column(nullable = false, updatable = false, length = 30)
