@@ -3,6 +3,7 @@ package com.gxdxx.programadmin.dto;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
@@ -19,7 +20,7 @@ public class PostDetailDto {
 
     private String createdBy;
 
-    private LocalDateTime createdAt;
+    private String createdAt;
 
     @Builder
     public PostDetailDto(Long id, String title, String content, String hashtag, String createdBy, LocalDateTime createdAt) {
@@ -28,7 +29,7 @@ public class PostDetailDto {
         this.content = content;
         this.hashtag = hashtag;
         this.createdBy = createdBy;
-        this.createdAt = createdAt;
+        this.createdAt = createdAt.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm:ss"));
     }
 
 

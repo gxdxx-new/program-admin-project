@@ -5,8 +5,10 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
@@ -25,14 +27,18 @@ public class PostListDto {
 
     private String createdBy;
 
-    private LocalDateTime createdAt;
-
-    public static PostListDto of(Long id, String memberName, String title, String content, String hashtag, String createdBy, LocalDateTime createdAt) {
-        return new PostListDto(id, memberName, title, content, hashtag, createdBy, createdAt);
-    }
+    private String createdAt;
 
     public static PostListDto from(Post post) {
-        return new PostListDto(post.getId(), post.getMember().getMemberName(), post.getTitle(), post.getContent(), post.getHashtag(), post.getCreatedBy(), post.getCreatedAt());
+        return new PostListDto(
+                post.getId(),
+                post.getMember().getMemberName(),
+                post.getTitle(),
+                post.getContent(),
+                post.getHashtag(),
+                post.getCreatedBy(),
+                post.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm:ss"))
+        );
     }
 
 }
