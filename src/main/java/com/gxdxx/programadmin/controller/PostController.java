@@ -7,6 +7,8 @@ import com.gxdxx.programadmin.dto.PostSearchDto;
 import com.gxdxx.programadmin.service.CommentService;
 import com.gxdxx.programadmin.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @RequestMapping("/posts")
@@ -72,7 +75,7 @@ public class PostController {
         return "redirect:/posts/{postId}";
     }
 
-    @GetMapping(value = "/{postId}")
+    @GetMapping("/{postId}")
     public String postDetail(Model model, @PathVariable("postId") Long postId) {
 
         PostDetailDto postDetailDto = postService.getPostDetail(postId);
@@ -83,7 +86,7 @@ public class PostController {
         return "posts/detail";
     }
 
-    @DeleteMapping(value = "/{postId}")  // 글 삭제
+    @DeleteMapping("/{postId}")  // 글 삭제
     public @ResponseBody ResponseEntity deletePost(
             @PathVariable("postId") Long postId, Principal principal) {
 

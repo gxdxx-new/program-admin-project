@@ -21,7 +21,7 @@ public class CommentController {
     private final PostService postService;
     private final CommentService commentService;
 
-    @PostMapping(value = "/{postId}")
+    @PostMapping("/{postId}")
     public @ResponseBody
     ResponseEntity commentNew(@Valid @RequestBody CommentFormDto commentFormDto, BindingResult bindingResult,
                               @PathVariable("postId") Long postId, Principal principal) {
@@ -35,7 +35,7 @@ public class CommentController {
         return new ResponseEntity<Long>(postId, HttpStatus.OK);
     }
 
-    @PatchMapping(value = "/{commentId}")
+    @PatchMapping("/{commentId}")
     public @ResponseBody ResponseEntity updateComment(@Valid @RequestBody CommentFormDto commentFormDto, BindingResult bindingResult,
                                                       @PathVariable("commentId") Long commentId, Principal principal) {
 
@@ -52,7 +52,7 @@ public class CommentController {
         return new ResponseEntity<Long>(commentId, HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/{commentId}")
+    @DeleteMapping("/{commentId}")
     public @ResponseBody ResponseEntity deleteComment(@PathVariable("commentId") Long commentId, Principal principal) {
 
         if (!commentService.validateComment(commentId, principal.getName())) {

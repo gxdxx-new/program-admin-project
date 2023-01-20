@@ -20,13 +20,13 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping(value = "/new")
+    @GetMapping("/new")
     public String memberForm(Model model) {
         model.addAttribute("memberFormDto", new MemberFormDto());
         return "members/form";
     }
 
-    @PostMapping(value = "/new")
+    @PostMapping("/new")
     public String memberNew(@Valid MemberFormDto memberFormDto, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
