@@ -83,7 +83,7 @@ public class PostService {
     public Long updatePost(PostFormDto postFormDto) {
 
         Post post = postRepository.findById(postFormDto.getId()).orElseThrow(PostNotFoundException::new);
-        post.updatePost(postFormDto.getTitle(), post.getTitle(), post.getHashtag());
+        post.updatePost(postFormDto.getTitle(), postFormDto.getContent(), postFormDto.getHashtag());
 
         return post.getId();
     }

@@ -14,12 +14,12 @@
         });
 
         function page(page){
-            var searchBy = $("#searchBy").val();
-            var searchQuery = $("#searchQuery").val();
+            var searchType = $("#searchType").val();
+            var searchValue = $("#searchValue").val();
 
-            location.href="/boards/" + page
-            + "?searchBy=" + searchBy
-            + "&searchQuery=" + searchQuery;
+            location.href="/posts" + "?page=" + page
+            + "&searchType=" + searchType
+            + "&searchValue=" + searchValue;
         }
 
         $(document).ready(function(){
