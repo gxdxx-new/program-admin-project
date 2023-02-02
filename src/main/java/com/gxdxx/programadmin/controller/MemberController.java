@@ -33,7 +33,7 @@ public class MemberController {
             return "members/form";
         }
 
-        memberService.saveMember(memberFormDto);
+        memberService.saveMember(memberFormDto.getMemberName(), memberFormDto.getPassword(), memberFormDto.getEmail(), memberFormDto.getNickname());
         return "redirect:/";
     }
 
