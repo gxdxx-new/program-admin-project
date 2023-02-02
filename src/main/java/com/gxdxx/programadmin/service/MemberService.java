@@ -29,11 +29,10 @@ public class MemberService implements UserDetailsService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public Long saveMember(MemberFormDto memberFormDto) {
-        Member member = Member.of(memberFormDto.getMemberName(), passwordEncoder.encode(memberFormDto.getPassword()), memberFormDto.getEmail(), memberFormDto.getNickname());
+    public Long saveMember(String memberName, String password, String email, String nickname) {
+        Member member = Member.of(memberName, passwordEncoder.encode(password), email, nickname);
         validateDuplicateMember(member);
-        memberRepository.save(member);
-        return member.getId();
+        return memberRepository.save(member).getId();
     }
 
     private void validateDuplicateMember(Member member) {
