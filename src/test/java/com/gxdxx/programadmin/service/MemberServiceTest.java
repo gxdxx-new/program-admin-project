@@ -2,7 +2,9 @@ package com.gxdxx.programadmin.service;
 
 import com.gxdxx.programadmin.dto.MemberFormDto;
 import com.gxdxx.programadmin.entity.Member;
+import com.gxdxx.programadmin.exception.MemberNameAlreadyExistsException;
 import com.gxdxx.programadmin.repository.MemberRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -60,6 +62,27 @@ class MemberServiceTest {
         assertEquals(member.getPassword(), findMember.getPassword());
     }
 
+    @Test
+    @DisplayName("회원가입_실패")
+    public void saveMemberFail() {
+        //given
+        MemberFormDto memberFormDto = createMemberFormDto();
+        Member member = createMember(memberFormDto);
+        Member alreadyExistsMember = createMember(memberFormDto);
+
+        ReflectionTestUtils.setField(memberService, "passwordEncoder", passwordEncoder);
+
+        //mocking
+        given(passwordEncoder.encode(anyString())).willReturn("encodedPassword");
+        ReflectionTestUtils.setField(member, "password", passwordEncoder.encode(member.getPassword()));
+        given(memberRepository.findByMemberName(member.getMemberName())).willReturn(alreadyExistsMember);
+
+        //then
+        Assertions.assertThrows(MemberNameAlreadyExistsException.class, () -> {
+            memberService.saveMember(memberFormDto.getMemberName(), memberFormDto.getPassword(), memberFormDto.getEmail(), memberFormDto.getNickname());
+        });
+    }
+
 
     private Member createMember(MemberFormDto memberFormDto) {
         return Member.of(memberFormDto.getMemberName(), memberFormDto.getPassword(), memberFormDto.getEmail(), memberFormDto.getNickname());
@@ -67,7 +90,7 @@ class MemberServiceTest {
 
     private MemberFormDto createMemberFormDto() {
         MemberFormDto memberFormDto = new MemberFormDto();
-        memberFormDto.setMemberName("don");
+        memberFormDto.setMemberName("nkd0310");
         memberFormDto.setPassword("123123123");
         memberFormDto.setEmail("nkd0310@naver.com");
         memberFormDto.setNickname("dondon");
