@@ -22,20 +22,20 @@ public abstract class Auditing {
 
     @CreatedBy
     @Column(nullable = false, updatable = false, length = 30)
-    private String createdBy;
+    protected String createdBy;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    protected LocalDateTime createdAt;
 
     @LastModifiedBy
     @Column(nullable = false, length = 30)
-    private String modifiedBy;
+    protected String modifiedBy;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @LastModifiedDate
     @Column(nullable = false)
-    private LocalDateTime modifiedAt;
+    protected LocalDateTime modifiedAt;
 
 }
