@@ -40,6 +40,10 @@ public class Member extends Auditing {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id")
+    private Company company;
+
     private Member(String memberName, String password, String email, String nickname) {
         this.memberName = memberName;
         this.password = password;
