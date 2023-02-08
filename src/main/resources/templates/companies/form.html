@@ -1,0 +1,79 @@
+    <!DOCTYPE html>
+    <html xmlns:th="http://www.thymeleaf.org"
+          xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+          layout:decorate="~{/layout/layout}">
+
+    <th:block layout:fragment="content">
+        <div class="container-fluid">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">회사 등록</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <form role="form" method="post" th:object="${companyFormDto}">
+
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">사업자등록번호</span>
+                                </div>
+                                <input type="text" th:field="*{firstNumber}" class="form-control" placeholder="지역번호를 입력해주세요." th:maxlength="3">-
+                                <input type="text" th:field="*{middleNumber}" class="form-control" placeholder="개인/법인 성격코드를 입력해주세요." th:maxlength="2">-
+                                <input type="text" th:field="*{lastNumber}" class="form-control" placeholder="일련번호와 검증번호를 입력해주세요." th:maxlength="5">
+                            </div>
+                            <p th:if="${#fields.hasErrors('firstNumber')}" th:errors="*{firstNumber}" class="fieldError">Incorrect data</p>
+                            <p th:if="${#fields.hasErrors('middleNumber')}" th:errors="*{middleNumber}" class="fieldError">Incorrect data</p>
+                            <p th:if="${#fields.hasErrors('lastNumber')}" th:errors="*{lastNumber}" class="fieldError">Incorrect data</p>
+
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">회사명</span>
+                                </div>
+                                <input type="text" th:field="*{companyName}" class="form-control" placeholder="회사명을 입력해주세요.">
+                            </div>
+                            <p th:if="${#fields.hasErrors('companyName')}" th:errors="*{companyName}" class="fieldError">Incorrect data</p>
+
+
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">대표명</span>
+                                </div>
+                                <input type="text" th:field="*{chiefName}" class="form-control" placeholder="대표명을 입력해주세요.">
+                            </div>
+                            <p th:if="${#fields.hasErrors('chiefName')}" th:errors="*{chiefName}" class="fieldError">Incorrect data</p>
+
+
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">이메일</span>
+                                </div>
+                                <input type="text" th:field="*{email}" class="form-control" placeholder="이메일을 입력해주세요.">
+                            </div>
+                            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fieldError">Incorrect data</p>
+
+
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">전화번호</span>
+                                </div>
+                                <input type="text" th:field="*{firstTelNumber}" class="form-control" placeholder="전화번호를 입력해주세요." th:maxlength="3">-
+                                <input type="text" th:field="*{middleTelNumber}" class="form-control" th:maxlength="4">-
+                                <input type="text" th:field="*{lastTelNumber}" class="form-control" th:maxlength="4">
+                            </div>
+                            <p th:if="${#fields.hasErrors('firstTelNumber')}" th:errors="*{firstTelNumber}" class="fieldError">Incorrect data</p>
+                            <p th:if="${#fields.hasErrors('middleTelNumber')}" th:errors="*{middleTelNumber}" class="fieldError">Incorrect data</p>
+                            <p th:if="${#fields.hasErrors('lastTelNumber')}" th:errors="*{lastTelNumber}" class="fieldError">Incorrect data</p>
+
+                            <br/>
+
+                            <button th:formaction="@{/companies/new}" type="submit" class="btn btn-primary">저장</button>
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </th:block>
+
+    </html>
