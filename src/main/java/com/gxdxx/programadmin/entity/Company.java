@@ -22,6 +22,10 @@ public class Company extends Auditing {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    @Embedded
+    private BusinessRegistrationNumber registrationNumber;
+
     @Column(nullable = false, length = 10)
     private String chiefName;
 
@@ -31,21 +35,23 @@ public class Company extends Auditing {
     @Column(nullable = false, length = 100)
     private String email;
 
-    @Column(nullable = false, length = 15)
-    private String phoneNumber;
+    @Column(nullable = false)
+    @Embedded
+    private TelephoneNumber telNumber;
 
     @Embedded
     private List<AfterService> afterServices = new ArrayList<>();
 
-    private Company(String chiefName, String companyName, String email, String phoneNumber) {
+    private Company(BusinessRegistrationNumber registrationNumber, String chiefName, String companyName, String email, TelephoneNumber telNumber) {
+        this.registrationNumber = registrationNumber;
         this.chiefName = chiefName;
         this.companyName = companyName;
         this.email = email;
-        this.phoneNumber = phoneNumber;
+        this.telNumber = telNumber;
     }
 
-    public static Company of(String chiefName, String companyName, String email, String phoneNumber) {
-        return new Company(chiefName, companyName, email, phoneNumber);
+    public static Company of(BusinessRegistrationNumber registrationNumber, String chiefName, String companyName, String email, TelephoneNumber telNumber) {
+        return new Company(registrationNumber, chiefName, companyName, email, telNumber);
     }
 
     @Override
