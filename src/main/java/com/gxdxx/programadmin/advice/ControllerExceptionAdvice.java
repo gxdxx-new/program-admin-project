@@ -1,11 +1,9 @@
 package com.gxdxx.programadmin.advice;
 
 import com.gxdxx.programadmin.dto.CommentListDto;
+import com.gxdxx.programadmin.dto.CompanyFormDto;
 import com.gxdxx.programadmin.dto.MemberFormDto;
-import com.gxdxx.programadmin.exception.CommentAjaxNotFoundException;
-import com.gxdxx.programadmin.exception.MemberNameAlreadyExistsException;
-import com.gxdxx.programadmin.exception.PostAjaxNotFoundException;
-import com.gxdxx.programadmin.exception.PostNotFoundException;
+import com.gxdxx.programadmin.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +40,13 @@ public class ControllerExceptionAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<String> commentAjaxNotFoundException() {
         return new ResponseEntity<String>("존재하지 않는 댓글입니다.", HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(RegistrationNumberAlreadyExistsException.class)
+    public String registrationNumberAlreadyExistsException(Model model) {
+        model.addAttribute("errorMessage", "이미 가입된 회사입니다.");
+        model.addAttribute("companyFormDto", new CompanyFormDto());
+        return "companies/form";
     }
 
     @ExceptionHandler({EventException.class, RuntimeException.class})
