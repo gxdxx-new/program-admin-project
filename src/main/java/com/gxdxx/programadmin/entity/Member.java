@@ -56,6 +56,10 @@ public class Member extends Auditing {
         return new Member(memberName, password, email, nickname);
     }
 
+    public void changePassword(String changePassword) {
+        this.password = changePassword;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

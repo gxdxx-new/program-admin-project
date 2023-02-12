@@ -1,13 +1,12 @@
 package com.gxdxx.programadmin.service;
 
-import com.gxdxx.programadmin.dto.MemberFormDto;
-import com.gxdxx.programadmin.dto.MemberProfileDto;
-import com.gxdxx.programadmin.dto.PostDetailDto;
+import com.gxdxx.programadmin.dto.*;
 import com.gxdxx.programadmin.entity.Member;
 import com.gxdxx.programadmin.entity.Post;
 import com.gxdxx.programadmin.entity.Role;
 import com.gxdxx.programadmin.exception.MemberNameAlreadyExistsException;
 import com.gxdxx.programadmin.exception.MemberNotFoundException;
+import com.gxdxx.programadmin.exception.PasswordNotMatchException;
 import com.gxdxx.programadmin.exception.PostNotFoundException;
 import com.gxdxx.programadmin.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -62,6 +61,37 @@ public class MemberService implements UserDetailsService {
                     .build();
 
         return memberProfileDto;
+    }
+
+    public MemberEditFormDto getMemberForm(String memberName) {
+        Member member = memberRepository.findByMemberName(memberName);
+        if (member == null) {
+            throw new MemberNotFoundException();
+        }
+        MemberEditFormDto memberEditFormDto = MemberEditFormDto.builder()
+                .memberName(member.getMemberName())
+                .email(member.getEmail())
+                .nickname(member.getNickname())
+                .company(member.getCompany())
+                .build();
+
+        return memberEditFormDto;
+    }
+
+    public void changePassword(String memberName, String currentPassword, String changePassword) {
+        Member member = memberRepository.findByMemberName(memberName);
+        if (member == null) {
+            throw new MemberNotFoundException();
+        }
+
+        validatePassword(currentPassword, member.getPassword());
+        member.changePassword(passwordEncoder.encode(changePassword));
+    }
+
+    private void validatePassword(String checkPassword, String savedPassword) {
+        if (!passwordEncoder.matches(checkPassword, savedPassword)) {
+            throw new PasswordNotMatchException();
+        }
     }
 
     @Override

@@ -1,21 +1,17 @@
 package com.gxdxx.programadmin.controller;
 
-import com.gxdxx.programadmin.dto.CommentListDto;
-import com.gxdxx.programadmin.dto.MemberFormDto;
-import com.gxdxx.programadmin.dto.MemberProfileDto;
-import com.gxdxx.programadmin.dto.PostDetailDto;
+import com.gxdxx.programadmin.dto.*;
 import com.gxdxx.programadmin.entity.Member;
 import com.gxdxx.programadmin.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.util.StringUtils;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -60,6 +56,30 @@ public class MemberController {
 
         model.addAttribute("member", memberProfileDto);
         return "members/profile";
+    }
+
+    @GetMapping("/profile/password")
+    public String memberPasswordEditForm(Principal principal, Model model) {
+        model.addAttribute("memberPasswordEditFormDto", new MemberPasswordEditFormDto());
+        return "members/editPassword";
+    }
+
+    @PostMapping("/profile/password")
+    public String memberPasswordEdit(@Valid MemberPasswordEditFormDto memberPasswordEditFormDto, BindingResult bindingResult,
+                                     Principal principal, Model model) {
+
+        if (bindingResult.hasErrors()) {
+            return "members/editPassword";
+        }
+
+        if (!StringUtils.equals(memberPasswordEditFormDto.getChangePassword(), memberPasswordEditFormDto.getChangePasswordCheck())) {
+            model.addAttribute("errorMessage", "변경할 비밀번호를 다시 입력해주세요.");
+            return "members/editPassword";
+        }
+
+        memberService.changePassword(principal.getName(), memberPasswordEditFormDto.getCurrentPassword(), memberPasswordEditFormDto.getChangePassword());
+
+        return "redirect:/";
     }
 
 }
