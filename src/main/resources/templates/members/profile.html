@@ -48,6 +48,11 @@
                         <div th:if="${#strings.isEmpty(member.company)}" class="h4 form-control">없음</div>
                     </div>
 
+                    <br/>
+                    <div style="text-align: center">
+                        <a th:href="@{/members/profile/password}" class="btn btn-primary">수정</a>
+                    </div>
+
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                 </div>
             </div>
