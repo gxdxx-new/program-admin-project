@@ -94,6 +94,24 @@ public class MemberService implements UserDetailsService {
         }
     }
 
+    public void changeEmail(String memberName, String changeEmail) {
+        Member member = memberRepository.findByMemberName(memberName);
+        if (member == null) {
+            throw new MemberNotFoundException();
+        }
+
+        member.changeEmail(changeEmail);
+    }
+
+    public void changeNickname(String memberName, String changeNickname) {
+        Member member = memberRepository.findByMemberName(memberName);
+        if (member == null) {
+            throw new MemberNotFoundException();
+        }
+
+        member.changeNickname(changeNickname);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Member member = memberRepository.findByMemberName(username);

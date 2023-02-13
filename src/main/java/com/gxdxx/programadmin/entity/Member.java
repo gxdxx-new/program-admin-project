@@ -60,6 +60,14 @@ public class Member extends Auditing {
         this.password = changePassword;
     }
 
+    public void changeEmail(String changeEmail) {
+        this.email = changeEmail;
+    }
+
+    public void changeNickname(String changeNickname) {
+        this.nickname = changeNickname;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
