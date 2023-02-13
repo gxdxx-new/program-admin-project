@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <th:block th:fragment="sidebarFragment">
 
@@ -16,6 +16,15 @@
 
         <div class="sidebar-heading">
             Menus
+        </div>
+
+        <div sec:authorize="isAuthenticated()">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{'/members/profile/' + ${#authentication.name}}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>마이페이지</span>
+                </a>
+            </li>
         </div>
 
         <li class="nav-item">

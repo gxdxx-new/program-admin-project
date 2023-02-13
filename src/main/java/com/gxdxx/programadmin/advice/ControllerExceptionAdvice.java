@@ -49,6 +49,18 @@ public class ControllerExceptionAdvice {
         return "companies/form";
     }
 
+    @ExceptionHandler(MemberNotFoundException.class)
+    public String memberNotFoundException(Model model) {
+        model.addAttribute("errorMessage", "존재하지 않는 회원입니다.");
+        return "index";
+    }
+
+    @ExceptionHandler(PasswordNotMatchException.class)
+    public String passwordNotMatchException(Model model) {
+        model.addAttribute("errorMessage", "저장된 비밀번호와 일치하지 않습니다.");
+        return "index";
+    }
+
     @ExceptionHandler({EventException.class, RuntimeException.class})
     public String eventErrorHandler(Model model){
         return "error";
