@@ -1,5 +1,5 @@
 package com.gxdxx.programadmin.entity;
 
-public enum SearchType {
+public enum PostSearchType {
     MEMBERNAME, TITLE, HASHTAG
 }

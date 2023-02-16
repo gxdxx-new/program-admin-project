@@ -1,14 +1,18 @@
 package com.gxdxx.programadmin.service;
 
-import com.gxdxx.programadmin.dto.CompanyFormDto;
-import com.gxdxx.programadmin.dto.PostFormDto;
+import com.gxdxx.programadmin.dto.*;
 import com.gxdxx.programadmin.entity.*;
 import com.gxdxx.programadmin.exception.MemberNameAlreadyExistsException;
 import com.gxdxx.programadmin.exception.RegistrationNumberAlreadyExistsException;
+import com.gxdxx.programadmin.exception.RegistrationNumberNotFoundException;
 import com.gxdxx.programadmin.repository.CompanyRepository;
+import com.gxdxx.programadmin.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.util.StringUtils;
 
 import javax.transaction.Transactional;
 
@@ -19,6 +23,7 @@ import javax.transaction.Transactional;
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
+    private final MemberRepository memberRepository;
 
     public Long saveCompany(CompanyFormDto companyFormDto) {
         BusinessRegistrationNumber registrationNumber = BusinessRegistrationNumber.of(companyFormDto.getFirstNumber(),
@@ -41,6 +46,19 @@ public class CompanyService {
         if (findCompany != null) {
             throw new RegistrationNumberAlreadyExistsException();
         }
+    }
+
+    public Page<CompanyListDto> searchCompanies(CompanySearchType searchType, String searchValue, Pageable pageable) {
+
+        if (searchValue == null || searchValue.isBlank()) {
+            return companyRepository.findAll(pageable).map(CompanyListDto::from);
+        }
+
+        return switch (searchType) {
+            case COMPANYNAME -> companyRepository.findByCompanyNameContains(searchValue, pageable).map(CompanyListDto::from);
+            case CHIEFNAME -> companyRepository.findByChiefNameContains(searchValue, pageable).map(CompanyListDto::from);
+        };
+
     }
 
 }
