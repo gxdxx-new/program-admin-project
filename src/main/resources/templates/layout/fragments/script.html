@@ -7,17 +7,30 @@
 
     <script th:inline="javascript">
         $(document).ready(function(){
-            $("#searchBtn").on("click",function(e) {
+            $("#PostSearchBtn").on("click",function(e) {
                 e.preventDefault();
-                page(0);
+                PostPage(0);
+            });
+            $("#CompanySearchBtn").on("click",function(e) {
+                e.preventDefault();
+                companyPage(0);
             });
         });
 
-        function page(page){
+        function postPage(page){
             var searchType = $("#searchType").val();
             var searchValue = $("#searchValue").val();
 
             location.href="/posts" + "?page=" + page
+            + "&searchType=" + searchType
+            + "&searchValue=" + searchValue;
+        }
+
+        function companyPage(page){
+            var searchType = $("#searchType").val();
+            var searchValue = $("#searchValue").val();
+
+            location.href="/companies" + "?page=" + page
             + "&searchType=" + searchType
             + "&searchValue=" + searchValue;
         }
@@ -74,7 +87,6 @@
         function updateComment(obj){
             var commentId = obj.dataset.id;
             var commentContent = $("#updateCommentContent_" + commentId).val();
-            alert(commentContent);
 
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");

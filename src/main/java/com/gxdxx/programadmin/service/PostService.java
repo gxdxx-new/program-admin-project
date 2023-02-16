@@ -5,7 +5,7 @@ import com.gxdxx.programadmin.dto.PostFormDto;
 import com.gxdxx.programadmin.dto.PostListDto;
 import com.gxdxx.programadmin.entity.Member;
 import com.gxdxx.programadmin.entity.Post;
-import com.gxdxx.programadmin.entity.SearchType;
+import com.gxdxx.programadmin.entity.PostSearchType;
 import com.gxdxx.programadmin.exception.PostAjaxNotFoundException;
 import com.gxdxx.programadmin.exception.PostNotFoundException;
 import com.gxdxx.programadmin.repository.MemberRepository;
@@ -28,7 +28,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
 
-    public Page<PostListDto> searchPosts(SearchType searchType, String searchValue, Pageable pageable) {
+    public Page<PostListDto> searchPosts(PostSearchType searchType, String searchValue, Pageable pageable) {
 
         if (searchValue == null || searchValue.isBlank()) {
             return postRepository.findAll(pageable).map(PostListDto::from);
