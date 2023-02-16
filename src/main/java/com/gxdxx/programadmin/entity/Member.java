@@ -68,6 +68,10 @@ public class Member extends Auditing {
         this.nickname = changeNickname;
     }
 
+    public void applyCompany(Company company) {
+        this.company = company;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

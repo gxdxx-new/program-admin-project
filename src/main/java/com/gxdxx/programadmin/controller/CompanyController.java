@@ -54,4 +54,30 @@ public class CompanyController {
         return "members/company";
     }
 
+    @GetMapping("/link/{firstNumber}/{middleNumber}/{lastNumber}")
+    public String companyLinkForm(@PathVariable("firstNumber") String firstNumber,
+                              @PathVariable("middleNumber") String middleNumber,
+                              @PathVariable("lastNumber") String lastNumber,
+                              Model model) {
+        model.addAttribute("company", companyService.getLinkCompany(firstNumber, middleNumber, lastNumber));
+        return "members/link";
+    }
+
+    @PostMapping("/employeeCheck")
+    public String companyLink(@Valid MailConfirmDto mailConfirmDto, BindingResult bindingResult,
+                              Principal principal, Model model) {
+
+        if (bindingResult.hasErrors()) {
+            return "members/profile/" + principal.getName();
+        }
+
+        if (!StringUtils.equals(mailConfirmDto.getMailNumberWhat(), mailConfirmDto.getMailNumber())) {
+            model.addAttribute("errorMessage", "인증번호가 틀렸습니다.");
+            return "members/profile/" + principal.getName();
+        }
+
+        companyService.validateVerificationCode(mailConfirmDto.getFirstNumber(), mailConfirmDto.getMiddleNumber(), mailConfirmDto.getLastNumber(),principal.getName());
+        return "redirect:/";
+    }
+
 }

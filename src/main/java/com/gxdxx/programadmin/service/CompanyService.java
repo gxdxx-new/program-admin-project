@@ -61,4 +61,27 @@ public class CompanyService {
 
     }
 
+    public CompanyLinkDto getLinkCompany(String firstNumber ,String middleNumber, String lastNumber) {
+        BusinessRegistrationNumber registrationNumber = BusinessRegistrationNumber.of(firstNumber, middleNumber, lastNumber);
+        Company findCompany = companyRepository.findByRegistrationNumber(registrationNumber);
+        if (findCompany == null) {
+            throw new RegistrationNumberNotFoundException();
+        }
+
+        CompanyLinkDto company = CompanyLinkDto.from(findCompany);
+
+        return company;
+    }
+
+    public void validateVerificationCode(String firstNumber, String middleNumber, String lastNumber, String memberName) {
+        BusinessRegistrationNumber registrationNumber = BusinessRegistrationNumber.of(firstNumber, middleNumber, lastNumber);
+        Company findCompany = companyRepository.findByRegistrationNumber(registrationNumber);
+        if (findCompany == null) {
+            throw new RegistrationNumberNotFoundException();
+        }
+        Member member = memberRepository.findByMemberName(memberName);
+
+        member.applyCompany(findCompany);
+    }
+
 }

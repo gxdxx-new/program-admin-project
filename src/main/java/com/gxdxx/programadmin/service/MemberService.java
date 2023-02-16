@@ -1,16 +1,17 @@
 package com.gxdxx.programadmin.service;
 
 import com.gxdxx.programadmin.dto.*;
+import com.gxdxx.programadmin.entity.Company;
 import com.gxdxx.programadmin.entity.Member;
 import com.gxdxx.programadmin.entity.Post;
 import com.gxdxx.programadmin.entity.Role;
-import com.gxdxx.programadmin.exception.MemberNameAlreadyExistsException;
-import com.gxdxx.programadmin.exception.MemberNotFoundException;
-import com.gxdxx.programadmin.exception.PasswordNotMatchException;
-import com.gxdxx.programadmin.exception.PostNotFoundException;
+import com.gxdxx.programadmin.exception.*;
+import com.gxdxx.programadmin.repository.CompanyRepository;
 import com.gxdxx.programadmin.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -19,6 +20,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -61,21 +63,6 @@ public class MemberService implements UserDetailsService {
                     .build();
 
         return memberProfileDto;
-    }
-
-    public MemberEditFormDto getMemberForm(String memberName) {
-        Member member = memberRepository.findByMemberName(memberName);
-        if (member == null) {
-            throw new MemberNotFoundException();
-        }
-        MemberEditFormDto memberEditFormDto = MemberEditFormDto.builder()
-                .memberName(member.getMemberName())
-                .email(member.getEmail())
-                .nickname(member.getNickname())
-                .company(member.getCompany())
-                .build();
-
-        return memberEditFormDto;
     }
 
     public void changePassword(String memberName, String currentPassword, String changePassword) {
