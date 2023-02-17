@@ -1,6 +1,6 @@
 package com.gxdxx.programadmin.dto;
 
-import com.gxdxx.programadmin.entity.SearchType;
+import com.gxdxx.programadmin.entity.PostSearchType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 public class PostSearchDto {
 
-    SearchType searchType;
+    PostSearchType searchType;
 
     String searchValue;
 

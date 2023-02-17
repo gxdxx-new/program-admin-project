@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layout}">
+
+<th:block layout:fragment="content">
+    <div class="container-fluid">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">회사 리스트</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+
+                    <button type="button" class="btn btn-primary" th:data-id="${company.email}" onclick="mail(this)">인증요청</button>
+
+                    <br/>
+                    <br/>
+
+                    <form role="form" method="post" th:object="${company}">
+
+                        <input type="hidden" th:field="*{firstNumber}" th:id="firstNumber">
+                        <input type="hidden" th:field="*{middleNumber}" th:id="middleNumber">
+                        <input type="hidden" th:field="*{lastNumber}" th:id="lastNumber">
+                        <input type="hidden" th:field="*{mailNumber}" th:id="mailNumber">
+
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">인증번호</span>
+                            </div>
+                            <input type="text" th:field="*{mailNumberWhat}" class="form-control" placeholder="인증번호를 입력해주세요">
+                        </div>
+
+                        <br/>
+
+                        <button th:formaction="@{/companies/employeeCheck}" type="submit" class="btn btn-primary">확인</button>
+
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+</html>

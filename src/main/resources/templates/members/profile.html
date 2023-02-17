@@ -48,6 +48,7 @@
                         </div>
                         <div th:if="not ${#strings.isEmpty(member.company)}" class="h4 form-control" th:text="${member.company.companyName}"></div>
                         <div th:if="${#strings.isEmpty(member.company)}" class="h4 form-control">없음</div>
+                        <a th:href="@{/companies}" class="btn btn-primary">연동</a>
                     </div>
 
                     <br/>

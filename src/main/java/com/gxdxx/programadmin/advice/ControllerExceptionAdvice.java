@@ -49,6 +49,13 @@ public class ControllerExceptionAdvice {
         return "companies/form";
     }
 
+    @ExceptionHandler(RegistrationNumberNotFoundException.class)
+    public String registrationNumberNotFoundException(Model model) {
+        model.addAttribute("errorMessage", "존재하지 않는 회사입니다.");
+        return "index";
+    }
+
+
     @ExceptionHandler(MemberNotFoundException.class)
     public String memberNotFoundException(Model model) {
         model.addAttribute("errorMessage", "존재하지 않는 회원입니다.");
