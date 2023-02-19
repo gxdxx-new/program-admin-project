@@ -1,17 +1,12 @@
 package com.gxdxx.programadmin.service;
 
 import com.gxdxx.programadmin.dto.*;
-import com.gxdxx.programadmin.entity.Company;
 import com.gxdxx.programadmin.entity.Member;
-import com.gxdxx.programadmin.entity.Post;
 import com.gxdxx.programadmin.entity.Role;
 import com.gxdxx.programadmin.exception.*;
-import com.gxdxx.programadmin.repository.CompanyRepository;
 import com.gxdxx.programadmin.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -25,7 +20,6 @@ import org.thymeleaf.util.StringUtils;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -37,7 +31,7 @@ public class MemberService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     public Long saveMember(String memberName, String password, String email, String nickname) {
-        Member member = Member.of(memberName, passwordEncoder.encode(password), email, nickname);
+        Member member = Member.of(memberName, passwordEncoder.encode(password), email, nickname, Role.USER);
         validateDuplicateMember(member);
         return memberRepository.save(member).getId();
     }
@@ -106,10 +100,16 @@ public class MemberService implements UserDetailsService {
             throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
         }
         List<GrantedAuthority> authorities = new ArrayList<>();
-        if ("admin".equals(username)) {
-            authorities.add(new SimpleGrantedAuthority(Role.ADMIN.getValue()));
-        } else {
-            authorities.add(new SimpleGrantedAuthority(Role.USER.getValue()));
+        switch (member.getRole()) {
+            case SUPERADMIN:
+                authorities.add(new SimpleGrantedAuthority(Role.SUPERADMIN.getValue()));
+                break;
+            case ADMIN:
+                authorities.add(new SimpleGrantedAuthority(Role.ADMIN.getValue()));
+                break;
+            case USER:
+                authorities.add(new SimpleGrantedAuthority(Role.USER.getValue()));
+                break;
         }
         return new User(member.getMemberName(), member.getPassword(), authorities);
     }
