@@ -43,6 +43,10 @@
             location.href="/superadmins/members" + "?page=" + page;
         }
 
+        function companySuperPagePage(page){
+            location.href="/superadmins/companies" + "?page=" + page;
+        }
+
         $(document).ready(function(){
             var errorMessage = [[${errorMessage}]];
             if(errorMessage != null){
