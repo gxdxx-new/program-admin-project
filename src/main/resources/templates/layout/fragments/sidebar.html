@@ -72,6 +72,15 @@
             </li>
         </div>
 
+        <div sec:authorize="hasRole('ROLE_ADMIN')">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/admins/members}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>회원 리스트</span>
+                </a>
+            </li>
+        </div>
+
         <li class="nav-item">
             <a class="nav-link" th:href="@{/posts}">
                 <i class="fas fa-fw fa-table"></i>

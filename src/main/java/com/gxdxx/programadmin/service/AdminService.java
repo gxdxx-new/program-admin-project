@@ -1,6 +1,7 @@
 package com.gxdxx.programadmin.service;
 
 import com.gxdxx.programadmin.dto.AdminListDto;
+import com.gxdxx.programadmin.dto.MemberListDto;
 import com.gxdxx.programadmin.entity.Member;
 import com.gxdxx.programadmin.entity.Role;
 import com.gxdxx.programadmin.exception.AdminNotFoundException;
@@ -29,6 +30,15 @@ public class AdminService {
         }
 
         return memberRepository.findByRole(Role.ADMIN, pageable).map(AdminListDto::from);
+    }
+
+    public Page<MemberListDto> searchMembers(String adminName, Pageable pageable) {
+        Member adminMember = memberRepository.findByMemberName(adminName);
+        if (adminMember.getRole() != Role.ADMIN) {
+            throw new AdminNotFoundException();
+        }
+
+        return memberRepository.findByRole(Role.USER, pageable).map(MemberListDto::from);
     }
 
 }
