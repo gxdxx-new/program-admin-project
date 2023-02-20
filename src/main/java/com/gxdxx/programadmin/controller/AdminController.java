@@ -43,4 +43,16 @@ public class AdminController {
         return "admins/memberList";
     }
 
+    @GetMapping("/companies")
+    public String getCompanies(
+            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
+            Principal principal,
+            Model model) {
+
+        model.addAttribute("companies", adminService.searchCompanies(principal.getName() ,pageable));
+        model.addAttribute("maxPage", 5);
+
+        return "admins/companyList";
+    }
+
 }

@@ -1,11 +1,12 @@
 package com.gxdxx.programadmin.service;
 
 import com.gxdxx.programadmin.dto.AdminListDto;
+import com.gxdxx.programadmin.dto.CompanyListDto;
 import com.gxdxx.programadmin.dto.MemberListDto;
 import com.gxdxx.programadmin.entity.Member;
 import com.gxdxx.programadmin.entity.Role;
 import com.gxdxx.programadmin.exception.AdminNotFoundException;
-import com.gxdxx.programadmin.exception.SuperAdminNotFoundException;
+import com.gxdxx.programadmin.repository.CompanyRepository;
 import com.gxdxx.programadmin.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ import javax.transaction.Transactional;
 public class AdminService {
 
     private final MemberRepository memberRepository;
+    private final CompanyRepository companyRepository;
 
     public Page<AdminListDto> searchAdmins(String adminName, Pageable pageable) {
         Member adminMember = memberRepository.findByMemberName(adminName);
@@ -39,6 +41,15 @@ public class AdminService {
         }
 
         return memberRepository.findByRole(Role.USER, pageable).map(MemberListDto::from);
+    }
+
+    public Page<CompanyListDto> searchCompanies(String adminName, Pageable pageable) {
+        Member adminMember = memberRepository.findByMemberName(adminName);
+        if (adminMember.getRole() != Role.ADMIN) {
+            throw new AdminNotFoundException();
+        }
+
+        return companyRepository.findAll(pageable).map(CompanyListDto::from);
     }
 
 }
