@@ -35,6 +35,10 @@
             + "&searchValue=" + searchValue;
         }
 
+        function adminPage(page){
+            location.href="/superadmins" + "?page=" + page;
+        }
+
         $(document).ready(function(){
             var errorMessage = [[${errorMessage}]];
             if(errorMessage != null){
