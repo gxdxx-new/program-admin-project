@@ -68,6 +68,12 @@ public class ControllerExceptionAdvice {
         return "index";
     }
 
+    @ExceptionHandler(SuperAdminNotFoundException.class)
+    public String superAdminNotFoundException(Model model) {
+        model.addAttribute("errorMessage", "존재하지 않는 최고 관리자입니다.");
+        return "index";
+    }
+
     @ExceptionHandler({EventException.class, RuntimeException.class})
     public String eventErrorHandler(Model model){
         return "error";
