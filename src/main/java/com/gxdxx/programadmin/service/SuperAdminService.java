@@ -1,6 +1,7 @@
 package com.gxdxx.programadmin.service;
 
 import com.gxdxx.programadmin.dto.AdminListDto;
+import com.gxdxx.programadmin.dto.MemberListDto;
 import com.gxdxx.programadmin.entity.Member;
 import com.gxdxx.programadmin.entity.Role;
 import com.gxdxx.programadmin.exception.MemberNameAlreadyExistsException;
@@ -48,6 +49,15 @@ public class SuperAdminService {
         }
 
         return memberRepository.findByRole(Role.ADMIN, pageable).map(AdminListDto::from);
+    }
+
+    public Page<MemberListDto> searchMembers(String superAdminName, Pageable pageable) {
+        Member superAdminMember = memberRepository.findByMemberName(superAdminName);
+        if (superAdminMember.getRole() != Role.SUPERADMIN) {
+            throw new SuperAdminNotFoundException();
+        }
+
+        return memberRepository.findByRole(Role.USER, pageable).map(MemberListDto::from);
     }
 
 }

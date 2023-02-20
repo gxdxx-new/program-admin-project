@@ -36,7 +36,11 @@
         }
 
         function adminPage(page){
-            location.href="/superadmins" + "?page=" + page;
+            location.href="/superadmins/admins" + "?page=" + page;
+        }
+
+        function memberPage(page){
+            location.href="/superadmins/members" + "?page=" + page;
         }
 
         $(document).ready(function(){

@@ -52,4 +52,16 @@ public class SuperAdminController {
         return "superadmins/adminList";
     }
 
+    @GetMapping("/members")
+    public String getMemberProfiles(
+            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
+            Principal principal,
+            Model model) {
+
+        model.addAttribute("members", superAdminService.searchMembers(principal.getName() ,pageable));
+        model.addAttribute("maxPage", 5);
+
+        return "superadmins/memberList";
+    }
+
 }
