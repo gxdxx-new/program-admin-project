@@ -27,6 +27,69 @@
             </li>
         </div>
 
+        <div sec:authorize="hasRole('ROLE_SUPERADMIN')">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/superadmins/new}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>관리자 회원가입</span>
+                </a>
+            </li>
+        </div>
+
+        <div sec:authorize="hasRole('ROLE_SUPERADMIN')">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/superadmins/companies}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>회사 리스트</span>
+                </a>
+            </li>
+        </div>
+
+        <div sec:authorize="hasRole('ROLE_ADMIN')">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/admins/companies}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>회사 리스트</span>
+                </a>
+            </li>
+        </div>
+
+        <div sec:authorize="hasRole('ROLE_SUPERADMIN')">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/superadmins/admins}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>관리자 리스트</span>
+                </a>
+            </li>
+        </div>
+
+        <div sec:authorize="hasRole('ROLE_ADMIN')">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/admins}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>관리자 리스트</span>
+                </a>
+            </li>
+        </div>
+
+        <div sec:authorize="hasRole('ROLE_SUPERADMIN')">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/superadmins/members}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>회원 리스트</span>
+                </a>
+            </li>
+        </div>
+
+        <div sec:authorize="hasRole('ROLE_ADMIN')">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/admins/members}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>회원 리스트</span>
+                </a>
+            </li>
+        </div>
+
         <li class="nav-item">
             <a class="nav-link" th:href="@{/posts}">
                 <i class="fas fa-fw fa-table"></i>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layout}">
+
+<th:block layout:fragment="content">
+    <div class="container-fluid">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">회원 리스트</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <td>아이디</td>
+                            <td>이메일</td>
+                            <td>닉네임</td>
+                            <td>가입일</td>
+                            <td>회사</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="member : ${members}">
+                            <td th:text="${member.memberName}"></td>
+                            <td th:text="${member.email}"></td>
+                            <td th:text="${member.nickname}"></td>
+                            <td th:text="${member.createdAt}"></td>
+                            <td th:if="not ${#strings.isEmpty(member.company)}" th:text="${member.company.companyName}"></td>
+                            <td th:if="${#strings.isEmpty(member.company)}">없음</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <br/>
+
+                    <div th:with="start=${(members.number/maxPage)*maxPage + 1}, end=(${(members.totalPages == 0) ? 1 : (start + (maxPage - 1) < members.totalPages ? start + (maxPage - 1) : members.totalPages)})" >
+                        <ul class="pagination justify-content-center">
+
+                            <li class="page-item" th:classappend="${members.first}?'disabled'">
+                                <a th:onclick="'javascript:memberAdminPage(' + ${members.number - 1} + ')'" aria-label='Previous' class="page-link">
+                                    <span aria-hidden='true'>Previous</span>
+                                </a>
+                            </li>
+
+                            <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${members.number eq page-1}?'active':''">
+                                <a th:onclick="'javascript:memberAdminPage(' + ${page - 1} + ')'" th:inline="text" class="page-link">[[${page}]]</a>
+                            </li>
+
+                            <li class="page-item" th:classappend="${members.last}?'disabled'">
+                                <a th:onclick="'javascript:memberAdminPage(' + ${members.number + 1} + ')'" aria-label='Next' class="page-link">
+                                    <span aria-hidden='true'>Next</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+</html>

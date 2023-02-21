@@ -35,6 +35,30 @@
             + "&searchValue=" + searchValue;
         }
 
+        function adminPage(page){
+            location.href="/superadmins/admins" + "?page=" + page;
+        }
+
+        function adminAdminPage(page){
+            location.href="/admins" + "?page=" + page;
+        }
+
+        function memberPage(page){
+            location.href="/superadmins/members" + "?page=" + page;
+        }
+
+        function memberAdminPage(page){
+            location.href="/admins/members" + "?page=" + page;
+        }
+
+        function companySuperAdminPage(page){
+            location.href="/superadmins/companies" + "?page=" + page;
+        }
+
+        function companyAdminPage(page){
+            location.href="/admins/companies" + "?page=" + page;
+        }
+
         $(document).ready(function(){
             var errorMessage = [[${errorMessage}]];
             if(errorMessage != null){
