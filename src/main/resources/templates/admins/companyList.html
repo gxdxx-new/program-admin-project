@@ -20,7 +20,9 @@
                         </thead>
                         <tbody>
                         <tr th:each="company : ${companies}">
-                            <td th:text="${company.companyName}"></td>
+                            <td>
+                                <a th:href="'/companies/'+${company.id}" th:text="${company.companyName}"></a>
+                            </td>
                             <td th:text="${company.chiefName}"></td>
                         </tr>
                         </tbody>

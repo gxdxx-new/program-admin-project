@@ -6,10 +6,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.format.DateTimeFormatter;
+
 @Getter
 @Setter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class CompanyListDto {
+public class CompanyDetailDto {
 
     private Long id;
 
@@ -25,15 +27,18 @@ public class CompanyListDto {
 
     private String email;
 
-    public static CompanyListDto from(Company company) {
-        return new CompanyListDto(
+    private String createdAt;
+
+    public static CompanyDetailDto from(Company company) {
+        return new CompanyDetailDto(
                 company.getId(),
                 company.getRegistrationNumber().getFirstNumber(),
                 company.getRegistrationNumber().getMiddleNumber(),
                 company.getRegistrationNumber().getLastNumber(),
                 company.getCompanyName(),
                 company.getChiefName(),
-                company.getEmail()
+                company.getEmail(),
+                company.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm:ss"))
         );
     }
 

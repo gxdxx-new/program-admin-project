@@ -79,6 +79,13 @@ public class ControllerExceptionAdvice {
         model.addAttribute("errorMessage", "존재하지 않는 관리자입니다.");
         return "index";
     }
+
+    @ExceptionHandler(CompanyNotFoundException.class)
+    public String companyNotFoundException(Model model) {
+        model.addAttribute("errorMessage", "존재하지 않는 회사입니다.");
+        return "index";
+    }
+
     @ExceptionHandler({EventException.class, RuntimeException.class})
     public String eventErrorHandler(Model model){
         return "error";
