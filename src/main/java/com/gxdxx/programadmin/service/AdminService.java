@@ -59,6 +59,15 @@ public class AdminService {
         return CompanyDetailDto.from(company);
     }
 
+    public List<OrganizationListDto> getOrganization(OrganizationSearchType searchType, String searchValue) {
+
+        if (searchValue == null || searchValue.isBlank()) {
+            return organizationRepository.findAll().stream().map(OrganizationListDto::from).toList();
+        }
+
+        return organizationRepository.findByOrganizationNameContains(searchValue).stream().map(OrganizationListDto::from).toList();
+    }
+
     public Long saveOrganization(Long companyId, String organizationName) {
         Company company = companyRepository.findById(companyId).orElseThrow(CompanyNotFoundException::new);
         Organization organization = Organization.of(organizationName, company);

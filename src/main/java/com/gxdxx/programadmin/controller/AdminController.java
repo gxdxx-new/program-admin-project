@@ -59,8 +59,11 @@ public class AdminController {
     }
 
     @GetMapping("/{companyId}")
-    public String getCompanyDetail(@PathVariable("companyId") Long companyId, Model model) {
+    public String getCompanyDetail(OrganizationSearchDto organizationSearchDto,
+                                   @PathVariable("companyId") Long companyId, Model model) {
         model.addAttribute("company", adminService.getCompanyDetail(companyId));
+        model.addAttribute("organizations", adminService.getOrganization(organizationSearchDto.getSearchType(), organizationSearchDto.getSearchValue()));
+        model.addAttribute("organizationSearchDto", organizationSearchDto);
         return "admins/companyDetail";
     }
 
