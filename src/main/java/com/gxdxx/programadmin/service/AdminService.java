@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -64,11 +65,23 @@ public class AdminService {
 
     public List<OrganizationListDto> getOrganization(OrganizationSearchType searchType, String searchValue) {
 
+        List<OrganizationListDto> organizationListDtos;
+
         if (searchValue == null || searchValue.isBlank()) {
-            return organizationRepository.findAll().stream().map(OrganizationListDto::from).toList();
+            organizationListDtos = organizationRepository.findAll().stream().map(OrganizationListDto::from).toList();
+            return getPositions(organizationListDtos);
         }
 
-        return organizationRepository.findByOrganizationNameContains(searchValue).stream().map(OrganizationListDto::from).toList();
+        organizationListDtos = organizationRepository.findByOrganizationNameContains(searchValue).stream().map(OrganizationListDto::from).toList();
+        return getPositions(organizationListDtos);
+    }
+
+    public List<OrganizationListDto> getPositions(List<OrganizationListDto> organizationListDtos) {
+        for (OrganizationListDto organizationListDto : organizationListDtos) {
+            List<PositionListDto> positionListDtos = positionRepository.findByOrganization_Id(organizationListDto.getId()).stream().map(PositionListDto::from).toList();
+            organizationListDto.setPositionListDtos(positionListDtos);
+        }
+        return organizationListDtos;
     }
 
     public Long saveOrganization(Long companyId, String organizationName) {

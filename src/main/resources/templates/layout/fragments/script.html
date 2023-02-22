@@ -263,7 +263,7 @@
 
         function savePosition(obj){
             var organizationId = obj.dataset.id;
-            var positionName = $("#savePositionInput").val();
+            var positionName = $("#savePositionInput_" + organizationId).val();
             var companyId = $("#companyId").val();
 
             var token = $("meta[name='_csrf']").attr("content");
