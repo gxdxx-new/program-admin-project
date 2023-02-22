@@ -1,5 +1,7 @@
 package com.gxdxx.programadmin.controller;
 
+import com.gxdxx.programadmin.dto.OrganizationFormDto;
+import com.gxdxx.programadmin.dto.OrganizationSearchDto;
 import com.gxdxx.programadmin.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -7,10 +9,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 
 @RequiredArgsConstructor
@@ -57,9 +59,29 @@ public class AdminController {
     }
 
     @GetMapping("/{companyId}")
-    public String companyLinkForm(@PathVariable("companyId") Long companyId, Model model) {
+    public String getCompanyDetail(@PathVariable("companyId") Long companyId, Model model) {
         model.addAttribute("company", adminService.getCompanyDetail(companyId));
         return "admins/companyDetail";
+    }
+
+    @GetMapping("/{companyId}/newOrganization")
+    public String organizationForm(@PathVariable("companyId") Long companyId, Model model) {
+        model.addAttribute("companyId", companyId);
+        model.addAttribute("organization", new OrganizationFormDto());
+        return "admins/organizationForm";
+    }
+
+    @PostMapping("/{companyId}/newOrganization")
+    public String organizationNew(@Valid OrganizationFormDto organizationFormDto, BindingResult bindingResult,
+                                  @PathVariable("companyId") Long companyId) {
+
+        if (bindingResult.hasErrors()) {
+            return "admins/organizationForm";
+        }
+
+        adminService.saveOrganization(companyId, organizationFormDto.getOrganizationName());
+        return "redirect:/";
+
     }
 
 }

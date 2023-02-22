@@ -1,16 +1,12 @@
 package com.gxdxx.programadmin.service;
 
-import com.gxdxx.programadmin.dto.AdminListDto;
-import com.gxdxx.programadmin.dto.CompanyDetailDto;
-import com.gxdxx.programadmin.dto.CompanyListDto;
-import com.gxdxx.programadmin.dto.MemberListDto;
-import com.gxdxx.programadmin.entity.Company;
-import com.gxdxx.programadmin.entity.Member;
-import com.gxdxx.programadmin.entity.Role;
+import com.gxdxx.programadmin.dto.*;
+import com.gxdxx.programadmin.entity.*;
 import com.gxdxx.programadmin.exception.AdminNotFoundException;
 import com.gxdxx.programadmin.exception.CompanyNotFoundException;
 import com.gxdxx.programadmin.repository.CompanyRepository;
 import com.gxdxx.programadmin.repository.MemberRepository;
+import com.gxdxx.programadmin.repository.OrganizationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -18,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Collections;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -27,6 +25,7 @@ public class AdminService {
 
     private final MemberRepository memberRepository;
     private final CompanyRepository companyRepository;
+    private final OrganizationRepository organizationRepository;
 
     public Page<AdminListDto> searchAdmins(String adminName, Pageable pageable) {
         Member adminMember = memberRepository.findByMemberName(adminName);
@@ -60,4 +59,10 @@ public class AdminService {
         return CompanyDetailDto.from(company);
     }
 
+    public Long saveOrganization(Long companyId, String organizationName) {
+        Company company = companyRepository.findById(companyId).orElseThrow(CompanyNotFoundException::new);
+        Organization organization = Organization.of(organizationName, company);
+        return organizationRepository.save(organization).getId();
+
+    }
 }
