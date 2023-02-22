@@ -1,12 +1,16 @@
 package com.gxdxx.programadmin.controller;
 
+import com.gxdxx.programadmin.dto.CommentFormDto;
 import com.gxdxx.programadmin.dto.OrganizationFormDto;
 import com.gxdxx.programadmin.dto.OrganizationSearchDto;
+import com.gxdxx.programadmin.dto.PositionFormDto;
 import com.gxdxx.programadmin.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -84,7 +88,19 @@ public class AdminController {
 
         adminService.saveOrganization(companyId, organizationFormDto.getOrganizationName());
         return "redirect:/";
+    }
 
+    @PostMapping("/{companyId}/{organizationId}/positions")
+    public @ResponseBody ResponseEntity positionNew(@Valid @RequestBody PositionFormDto positionFormDto, BindingResult bindingResult,
+                               @PathVariable("companyId") Long companyId,
+                               @PathVariable("organizationId") Long organizationId) {
+
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<String>("직책은 20자 이내로 입력해주세요.", HttpStatus.FORBIDDEN);
+        }
+
+        adminService.savePosition(companyId, organizationId, positionFormDto.getPositionName());
+        return new ResponseEntity<Long>(companyId, HttpStatus.OK);
     }
 
 }

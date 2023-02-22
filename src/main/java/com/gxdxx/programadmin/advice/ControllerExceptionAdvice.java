@@ -86,6 +86,12 @@ public class ControllerExceptionAdvice {
         return "index";
     }
 
+    @ExceptionHandler(OrganizationAjaxNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<String> organizationAjaxNotFoundException() {
+        return new ResponseEntity<String>("존재하지 않는 부서입니다.", HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler({EventException.class, RuntimeException.class})
     public String eventErrorHandler(Model model){
         return "error";

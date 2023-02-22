@@ -260,6 +260,49 @@
                 }
             });
         }
+
+        function savePosition(obj){
+            var organizationId = obj.dataset.id;
+            var positionName = $("#savePositionInput").val();
+            var companyId = $("#companyId").val();
+
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            var url = "/admins/" + companyId + "/" + organizationId + "/positions";
+
+            var paramData = {
+                positionName : positionName
+            };
+
+            var positionFormDto = JSON.stringify(paramData);
+
+            $.ajax({
+                url      : url,
+                type     : "POST",
+                contentType : "application/json",
+                data     : positionFormDto,
+                beforeSend : function(xhr){
+                    /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType : "json",
+                cache   : false,
+                success  : function(result, status){
+                    location.href='/admins/' + companyId;
+                },
+                error : function(jqXHR, status, error){
+
+                    if(jqXHR.status == '401'){
+                        alert('로그인 후 이용해주세요');
+                        location.href='/members/login';
+                    } else{
+                        alert(jqXHR.responseText);
+                    }
+
+                }
+            });
+        }
     </script>
 
 </th:block>

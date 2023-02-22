@@ -4,9 +4,11 @@ import com.gxdxx.programadmin.dto.*;
 import com.gxdxx.programadmin.entity.*;
 import com.gxdxx.programadmin.exception.AdminNotFoundException;
 import com.gxdxx.programadmin.exception.CompanyNotFoundException;
+import com.gxdxx.programadmin.exception.OrganizationAjaxNotFoundException;
 import com.gxdxx.programadmin.repository.CompanyRepository;
 import com.gxdxx.programadmin.repository.MemberRepository;
 import com.gxdxx.programadmin.repository.OrganizationRepository;
+import com.gxdxx.programadmin.repository.PositionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -26,6 +28,7 @@ public class AdminService {
     private final MemberRepository memberRepository;
     private final CompanyRepository companyRepository;
     private final OrganizationRepository organizationRepository;
+    private final PositionRepository positionRepository;
 
     public Page<AdminListDto> searchAdmins(String adminName, Pageable pageable) {
         Member adminMember = memberRepository.findByMemberName(adminName);
@@ -74,4 +77,11 @@ public class AdminService {
         return organizationRepository.save(organization).getId();
 
     }
+
+    public Long savePosition(Long companyId, Long organizationId, String positionName) {
+        Organization organization = organizationRepository.findById(organizationId).orElseThrow(OrganizationAjaxNotFoundException::new);
+        Position position = Position.of(positionName, organization);
+        return positionRepository.save(position).getId();
+    }
+
 }
