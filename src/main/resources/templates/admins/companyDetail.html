@@ -59,14 +59,15 @@
                     <a th:href="'/admins/'+${company.id}+'/newOrganization'" class="btn btn-primary">부서 등록</a>
 
                     <br/><br/>
-
-                    <div class="form-inline" th:object="${organizationSearchDto}">
-                        <select th:field="*{searchType}" class="form-control" style="width:auto;">
-                            <option value="ORGANIZATIONNAME">부서명</option>
-                        </select>
-                        <input th:field="*{searchValue}" type="text" class="form-control" placeholder="부서명을 입력해주세요">
-                        <button id="OrgSearchBtn" type="submit" class="btn btn-primary">검색</button>
-                    </div>
+                    <form th:action="@{/admins/{companyId}(companyId=${company.id})}" role="form" method="get" th:object="${organizationSearchDto}">
+                        <div class="form-inline">
+                            <select th:field="*{searchType}" class="form-control" style="width:auto;">
+                                <option value="ORGANIZATIONNAME">부서명</option>
+                            </select>
+                            <input th:field="*{searchValue}" type="text" class="form-control" placeholder="부서명을 입력해주세요">
+                            <button id="OrgSearchBtn" type="submit" class="btn btn-primary">검색</button>
+                        </div>
+                    </form>
 
                     <br/><br/>
 
