@@ -97,6 +97,14 @@
                                     <span class="input-group-text">직책명</span>
                                 </div>
                                 <div class="h4 form-control" th:text="${position.positionName}"></div>
+                                <div th:each="member : ${position.positionMemberListDtos}" class="mb-3">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">성명</span>
+                                        </div>
+                                        <div class="h4 form-control" th:text="${member.memberName}"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

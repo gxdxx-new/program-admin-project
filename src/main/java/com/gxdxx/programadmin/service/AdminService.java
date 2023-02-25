@@ -79,9 +79,18 @@ public class AdminService {
     public List<OrganizationListDto> getPositions(List<OrganizationListDto> organizationListDtos) {
         for (OrganizationListDto organizationListDto : organizationListDtos) {
             List<PositionListDto> positionListDtos = positionRepository.findByOrganization_Id(organizationListDto.getId()).stream().map(PositionListDto::from).toList();
+            positionListDtos = getMembers(positionListDtos);
             organizationListDto.setPositionListDtos(positionListDtos);
         }
         return organizationListDtos;
+    }
+
+    public List<PositionListDto> getMembers(List<PositionListDto> positionListDtos) {
+        for (PositionListDto positionListDto : positionListDtos) {
+            List<PositionMemberListDto> positionMemberListDtos = memberRepository.findByPosition_Id(positionListDto.getId()).stream().map(PositionMemberListDto::from).toList();
+            positionListDto.setPositionMemberListDtos(positionMemberListDtos);
+        }
+        return positionListDtos;
     }
 
     public Long saveOrganization(Long companyId, String organizationName) {
