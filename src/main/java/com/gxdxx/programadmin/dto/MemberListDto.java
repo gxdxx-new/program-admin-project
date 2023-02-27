@@ -14,6 +14,8 @@ import java.time.format.DateTimeFormatter;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberListDto {
 
+    private Long id;
+
     private String memberName;
 
     private String email;
@@ -26,6 +28,7 @@ public class MemberListDto {
 
     public static MemberListDto from(Member member) {
         return new MemberListDto(
+                member.getId(),
                 member.getMemberName(),
                 member.getEmail(),
                 member.getNickname(),

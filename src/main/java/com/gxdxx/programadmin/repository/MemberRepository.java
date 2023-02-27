@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
@@ -16,5 +17,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Page<Member> findByRole(Role role, Pageable pageable);
 
     ArrayList<Member> findByPosition_Id(Long positionId);
+
+    List<Member> findByCompany_Id(Long companyId);
 
 }

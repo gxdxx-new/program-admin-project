@@ -87,7 +87,7 @@ public class AdminController {
         }
 
         adminService.saveOrganization(companyId, organizationFormDto.getOrganizationName());
-        return "redirect:/";
+        return "redirect:/admins/"+companyId;
     }
 
     @PostMapping("/{companyId}/{organizationId}/positions")
@@ -101,6 +101,18 @@ public class AdminController {
 
         adminService.savePosition(companyId, organizationId, positionFormDto.getPositionName());
         return new ResponseEntity<Long>(companyId, HttpStatus.OK);
+    }
+
+    @GetMapping("/{companyId}/{organizationId}/{positionId}")
+    public String manageMember(@PathVariable("companyId") Long companyId,
+                               @PathVariable("organizationId") Long organizationId,
+                               @PathVariable("positionId") Long positionId,
+                               Model model) {
+        model.addAttribute("companyId", companyId);
+        model.addAttribute("organizationId", organizationId);
+        model.addAttribute("positionId", positionId);
+        model.addAttribute("members", adminService.manageMember(companyId));
+        return "admins/manageMember";
     }
 
 }

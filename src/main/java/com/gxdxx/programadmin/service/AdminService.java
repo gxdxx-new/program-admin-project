@@ -2,9 +2,7 @@ package com.gxdxx.programadmin.service;
 
 import com.gxdxx.programadmin.dto.*;
 import com.gxdxx.programadmin.entity.*;
-import com.gxdxx.programadmin.exception.AdminNotFoundException;
-import com.gxdxx.programadmin.exception.CompanyNotFoundException;
-import com.gxdxx.programadmin.exception.OrganizationAjaxNotFoundException;
+import com.gxdxx.programadmin.exception.*;
 import com.gxdxx.programadmin.repository.CompanyRepository;
 import com.gxdxx.programadmin.repository.MemberRepository;
 import com.gxdxx.programadmin.repository.OrganizationRepository;
@@ -104,6 +102,17 @@ public class AdminService {
         Organization organization = organizationRepository.findById(organizationId).orElseThrow(OrganizationAjaxNotFoundException::new);
         Position position = Position.of(positionName, organization);
         return positionRepository.save(position).getId();
+    }
+
+    public List<MemberListDto> manageMember(Long companyId) {
+        List<Member> allMembers = memberRepository.findByCompany_Id(companyId);
+        List<MemberListDto> newMembers = new ArrayList<>();
+        for (Member member : allMembers) {
+            if (member.getOrganization() == null && member.getPosition() == null) {
+                newMembers.add(MemberListDto.from(member));
+            }
+        }
+        return newMembers;
     }
 
 }
