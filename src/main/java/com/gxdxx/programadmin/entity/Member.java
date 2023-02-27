@@ -81,6 +81,14 @@ public class Member extends Auditing implements UserDetails {
         this.company = company;
     }
 
+    public void applyOrganization(Organization organization) {
+        this.organization = organization;
+    }
+
+    public void applyPosition(Position position) {
+        this.position = position;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

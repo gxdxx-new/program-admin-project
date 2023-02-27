@@ -115,4 +115,12 @@ public class AdminService {
         return newMembers;
     }
 
+    public void grantMember(Long companyId, Long organizationId, Long positionId, Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+        Organization organization = organizationRepository.findById(organizationId).orElseThrow(OrganizationNotFoundException::new);
+        member.applyOrganization(organization);
+        Position position = positionRepository.findById(positionId).orElseThrow(PositionNotFoundException::new);
+        member.applyPosition(position);
+    }
+
 }

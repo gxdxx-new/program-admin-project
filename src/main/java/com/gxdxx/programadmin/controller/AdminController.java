@@ -115,4 +115,14 @@ public class AdminController {
         return "admins/manageMember";
     }
 
+    @PostMapping("/{companyId}/{organizationId}/{positionId}/{memberId}")
+    public String RegisterManageMember(@PathVariable("companyId") Long companyId,
+                                       @PathVariable("organizationId") Long organizationId,
+                                       @PathVariable("positionId") Long positionId,
+                                       @PathVariable("memberId") Long memberId) {
+
+        adminService.grantMember(companyId, organizationId, positionId, memberId);
+        return "redirect:/admins/"+companyId;
+    }
+
 }
