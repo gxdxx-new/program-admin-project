@@ -92,6 +92,18 @@ public class ControllerExceptionAdvice {
         return new ResponseEntity<String>("존재하지 않는 부서입니다.", HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(OrganizationNotFoundException.class)
+    public String organizationNotFoundException(Model model) {
+        model.addAttribute("errorMessage", "존재하지 않는 부서입니다.");
+        return "index";
+    }
+
+    @ExceptionHandler(PositionNotFoundException.class)
+    public String positionNotFoundException(Model model) {
+        model.addAttribute("errorMessage", "존재하지 않는 직책입니다.");
+        return "index";
+    }
+
     @ExceptionHandler({EventException.class, RuntimeException.class})
     public String eventErrorHandler(Model model){
         return "error";
