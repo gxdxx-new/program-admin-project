@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
+      layout:decorate="~{/layout/layout}">
+
+<th:block layout:fragment="content">
+    <div class="container-fluid">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">회사 정보</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+
+                    <input type="hidden" th:field="${company.id}" th:id="companyId">
+
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">사업자등록번호</span>
+                        </div>
+                        <div class="h4 form-control" th:text="${company.firstNumber} + '-' + ${company.middleNumber} + '-' + ${company.lastNumber}"></div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">회사명</span>
+                        </div>
+                        <div class="h4 form-control" th:text="${company.companyName}"></div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">대표명</span>
+                        </div>
+                        <div class="h4 form-control" th:text="${company.chiefName}"></div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">이메일</span>
+                        </div>
+                        <div class="h4 form-control" th:text="${company.email}"></div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">생성일</span>
+                        </div>
+                        <div class="h4 form-control" th:text="${company.createdAt}"></div>
+                    </div>
+
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="table-responsive">
+
+                    <a th:href="'/admins/'+${company.id}+'/newOrganization'" class="btn btn-primary">부서 등록</a>
+
+                    <br/><br/>
+                    <form th:action="@{/admins/{companyId}(companyId=${company.id})}" role="form" method="get" th:object="${organizationSearchDto}">
+                        <div class="form-inline">
+                            <select th:field="*{searchType}" class="form-control" style="width:auto;">
+                                <option th:value="ORGANIZATIONNAME">부서명</option>
+                            </select>
+                            <input th:field="*{searchValue}" type="text" class="form-control" placeholder="부서명을 입력해주세요">
+                            <button id="OrgSearchBtn" type="submit" class="btn btn-primary">검색</button>
+                        </div>
+                    </form>
+
+                    <br/><br/>
+
+                    <div th:each="organization : ${organizations}" class="mb-3">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">부서명</span>
+                            </div>
+                            <div class="h4 form-control" th:text="${organization.organizationName}"></div>
+                        </div>
+
+                        <button type="button" class="btn btn-primary" data-bs-toggle="collapse" th:attr="data-bs-target=|#savePosition_${organization.id}">
+                            직책 등록
+                        </button>
+                        <div class="collapse" th:id="'savePosition_' + ${organization.id}">
+                            <div class="input-group">
+                                <input type="text" class="form-control" aria-label="With textarea" th:id="'savePositionInput_' + ${organization.id}">
+                                <div class="input-group-prepend">
+                                    <button type="button" class="btn btn-primary" th:data-id="${organization.id}" onclick="savePosition(this)">등록</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div th:each="position : ${organization.positionListDtos}" class="mb-3">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">직책명</span>
+                                </div>
+                                <div class="h4 form-control" th:text="${position.positionName}"></div>
+                                <div th:each="member : ${position.positionMemberListDtos}" class="mb-3">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">성명</span>
+                                        </div>
+                                        <div class="h4 form-control" th:text="${member.memberName}"></div>
+                                    </div>
+                                </div>
+                                <a th:href="'/admins/'+${company.id}+'/'+${organization.id}+'/'+${position.id}" class="btn btn-primary">사원 관리</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</th:block>
+
+</html>

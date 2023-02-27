@@ -45,6 +45,14 @@ public class Member extends Auditing implements UserDetails {
     @JoinColumn(name = "company_id")
     private Company company;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "organization_id")
+    private Organization organization;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "position_id")
+    private Position position;
+
     private Member(String memberName, String password, String email, String nickname, Role role) {
         this.memberName = memberName;
         this.password = password;
@@ -71,6 +79,14 @@ public class Member extends Auditing implements UserDetails {
 
     public void applyCompany(Company company) {
         this.company = company;
+    }
+
+    public void applyOrganization(Organization organization) {
+        this.organization = organization;
+    }
+
+    public void applyPosition(Position position) {
+        this.position = position;
     }
 
     @Override
