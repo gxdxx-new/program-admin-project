@@ -2,6 +2,7 @@ package com.gxdxx.programadmin.service;
 
 import com.gxdxx.programadmin.dto.MemberFormDto;
 import com.gxdxx.programadmin.entity.Member;
+import com.gxdxx.programadmin.entity.Role;
 import com.gxdxx.programadmin.exception.MemberNameAlreadyExistsException;
 import com.gxdxx.programadmin.repository.MemberRepository;
 import org.junit.jupiter.api.Assertions;
@@ -85,7 +86,7 @@ class MemberServiceTest {
 
 
     private Member createMember(MemberFormDto memberFormDto) {
-        return Member.of(memberFormDto.getMemberName(), memberFormDto.getPassword(), memberFormDto.getEmail(), memberFormDto.getNickname());
+        return Member.of(memberFormDto.getMemberName(), memberFormDto.getPassword(), memberFormDto.getEmail(), memberFormDto.getNickname(), Role.USER);
     }
 
     private MemberFormDto createMemberFormDto() {
