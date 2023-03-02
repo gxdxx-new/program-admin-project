@@ -40,7 +40,7 @@ spring:
   thymeleaf:
     enabled: true
     cache: false
-    prefix: classpath:templates/
+    prefix: classpath:/templates/
     suffix: .html
     check-templates-location: true
   mvc:
