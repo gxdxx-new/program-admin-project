@@ -30,9 +30,16 @@ jobs:
         with:
           files: ${{ env.RESOURCE_PATH }}
         env:
+          spring.datasource.driver-class-name: com.mysql.cj.jdbc.Driver
           spring.datasource.url: ${{ secrets.RDS_HOST }}
           spring.datasource.username: ${{ secrets.RDS_USERNAME }}
           spring.datasource.password: ${{ secrets.RDS_USERNAME }}
+          spring.jpa.database: mysql
+          spring.jpa.database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+          spring.jpa.defer-datasource-initialization: true
+          spring.jpa.hibernate.ddl-auto: update
+          spring.jpa.properties.hibernate.default_batch_fetch_size: 100
+          spring.jpa.init.mode: always
           spring.mail.username: ${{ secrets.MAIL_USERNAME }}
           spring.mail.password: ${{ secrets.MAIL_PASSWORD }}
 
