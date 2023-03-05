@@ -2,7 +2,9 @@
 /src/main/resources/static/bootstrap
 
 # yml file
+application.yml
 application-local.yml
+application-prod.yml
 
 # Querydsl
 /src/main/generated
