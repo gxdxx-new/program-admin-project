@@ -18,6 +18,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/Checkout@v2
+        run: touch ./src/main/resources/application.yml
         
       - name: Set up JDK 17
         uses: actions/setup-java@v1
